@@ -5,20 +5,27 @@ import PackageDescription
 
 let package = Package(
   name: "DashFeature",
+  platforms: [.iOS(.v26)],
   products: [
     .library(
       name: "DashFeature",
       targets: ["DashFeature"]
     ),
   ],
+  dependencies: [ .package(path: "../DashPlatform") ],
   targets: [
     .target(
       name: "DashFeature",
+      dependencies: [
+        .product(name: "DashPlatform", package: "DashPlatform")
+      ],
       path: "DashFeature"
     ),
     .testTarget(
       name: "DashFeatureTests",
-      dependencies: ["DashFeature"],
+      dependencies: [
+        "DashFeature"
+      ],
       path: "DashFeatureTests"
     ),
   ],
