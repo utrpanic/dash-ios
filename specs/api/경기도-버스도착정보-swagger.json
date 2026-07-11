@@ -1,0 +1,1311 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "경기도 버스의 실시간 운행정보를 수집하여 이용자에게 제공하는 시스템입니다. 해당 정류소(정류소 ID)에 정차하는 버스노선들의 도착정보와 특정 버스노선(노선ID)들의 도착정보 등을 제공합니다",
+    "version": "1.0.0",
+    "title": "경기도_버스도착정보 조회"
+  },
+  "host": "apis.data.go.kr/6410000/busarrivalservice/v2",
+  "basePath": "",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/getBusArrivalListv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "응답메시지",
+                      "properties": {
+                      }
+                    },
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "응답코드",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busArrivalList": {
+                      "type": "object",
+                      "description": "busArrivalList",
+                      "properties": {
+                        "stateCd2": {
+                          "type": "integer",
+                          "description": " 두번째차량 상태코드 (0:교차로통과, 1:정류소 도착, 2:정류소 출발)",
+                          "properties": {
+                          }
+                        },
+                        "crowded1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "crowded2": {
+                          "type": "integer",
+                          "description": " 두번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "flag": {
+                          "type": "string",
+                          "description": " 상태구분(RUN:운행중 PASS:운행중 STOP:운행종료 WAIT:회차지대기)",
+                          "properties": {
+                          }
+                        },
+                        "locationNo1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 위치 정보 (몇번째전 정류소)",
+                          "properties": {
+                          }
+                        },
+                        "locationNo2": {
+                          "type": "integer",
+                          "description": " 두번째차량 위치 정보 (몇번째전 정류소)",
+                          "properties": {
+                          }
+                        },
+                        "lowPlate1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                          "properties": {
+                          }
+                        },
+                        "lowPlate2": {
+                          "type": "integer",
+                          "description": " 두번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                          "properties": {
+                          }
+                        },
+                        "plateNo1": {
+                          "type": "string",
+                          "description": " 첫번째차량 차량번호",
+                          "properties": {
+                          }
+                        },
+                        "plateNo2": {
+                          "type": "string",
+                          "description": " 두번째차량 차량번호",
+                          "properties": {
+                          }
+                        },
+                        "predictTime1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                          "properties": {
+                          }
+                        },
+                        "predictTime2": {
+                          "type": "integer",
+                          "description": " 두번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                          "properties": {
+                          }
+                        },
+                        "remainSeatCnt1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "remainSeatCnt2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "routeDestId": {
+                          "type": "integer",
+                          "description": " 진행방향 마지막 정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeDestName": {
+                          "type": "string",
+                          "description": " 진행방향 마지막 정류소명 ( 예. ",
+                          "properties": {
+                          }
+                        },
+                        "routeId": {
+                          "type": "integer",
+                          "description": " 노선아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeName": {
+                          "type": "string",
+                          "description": " 노선명",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeCd": {
+                          "type": "integer",
+                          "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스)",
+                          "properties": {
+                          }
+                        },
+                        "staOrder": {
+                          "type": "integer",
+                          "description": " 정류소순번 (요청변수 정류소가 노선의 몇번째 정류소인지 나타냄)",
+                          "properties": {
+                          }
+                        },
+                        "stationId": {
+                          "type": "integer",
+                          "description": " 정류소아이디 (요청변수 정류소 아이디)",
+                          "properties": {
+                          }
+                        },
+                        "stationNm1": {
+                          "type": "string",
+                          "description": " 첫번째차량 위치 정류소명",
+                          "properties": {
+                          }
+                        },
+                        "stationNm2": {
+                          "type": "string",
+                          "description": " 두번째차량 위치 정류소명",
+                          "properties": {
+                          }
+                        },
+                        "taglessCd1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                          "properties": {
+                          }
+                        },
+                        "taglessCd2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                          "properties": {
+                          }
+                        },
+                        "turnSeq": {
+                          "type": "integer",
+                          "description": " 노선의 회차점 순번",
+                          "properties": {
+                          }
+                        },
+                        "vehId1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 차량아이디",
+                          "properties": {
+                          }
+                        },
+                        "vehId2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 차량아이디",
+                          "properties": {
+                          }
+                        },
+                        "predictTimeSec1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                          "properties": {
+                          }
+                        },
+                        "predictTimeSec2": {
+                          "type": "integer",
+                          "description": " 두번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                          "properties": {
+                          }
+                        },
+                        "stateCd1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 상태코드 (0:교차로통과, 1:정류소 도착, 2:정류소 출발)",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "버스도착정보목록조회",
+        "description": "해당 정류소에 정차하는 모든 노선에 대한 첫번째/두번째 도착예정 버스의 위치정보와 도착예정시간, 빈자리, 저상버스 정보를 제공하는 버스도착정보목록서비스",
+        "operationId": "getBusArrivalListv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "stationId",
+          "description": "정류소아이디",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    },
+    "/getBusArrivalItemv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "응답메시지",
+                      "properties": {
+                      }
+                    },
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "응답코드",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busArrivalItem": {
+                      "type": "object",
+                      "description": "busArrivalItem",
+                      "properties": {
+                        "predictTimeSec1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                          "properties": {
+                          }
+                        },
+                        "predictTimeSec2": {
+                          "type": "integer",
+                          "description": " 두번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                          "properties": {
+                          }
+                        },
+                        "crowded1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "crowded2": {
+                          "type": "integer",
+                          "description": " 두번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "flag": {
+                          "type": "string",
+                          "description": " 상태구분(RUN:운행중 PASS:운행중 STOP:운행종료 WAIT:회차지대기)",
+                          "properties": {
+                          }
+                        },
+                        "locationNo1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 위치 정보 (몇번째전 정류소)",
+                          "properties": {
+                          }
+                        },
+                        "locationNo2": {
+                          "type": "integer",
+                          "description": " 두번째차량 위치 정보 (몇번째전 정류소)",
+                          "properties": {
+                          }
+                        },
+                        "lowPlate1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                          "properties": {
+                          }
+                        },
+                        "lowPlate2": {
+                          "type": "integer",
+                          "description": " 두번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                          "properties": {
+                          }
+                        },
+                        "plateNo1": {
+                          "type": "string",
+                          "description": " 첫번째차량 차량번호",
+                          "properties": {
+                          }
+                        },
+                        "plateNo2": {
+                          "type": "string",
+                          "description": " 두번째차량 차량번호",
+                          "properties": {
+                          }
+                        },
+                        "predictTime1": {
+                          "type": "integer",
+                          "description": " 첫번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                          "properties": {
+                          }
+                        },
+                        "predictTime2": {
+                          "type": "integer",
+                          "description": " 두번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                          "properties": {
+                          }
+                        },
+                        "remainSeatCnt1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "remainSeatCnt2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                          "properties": {
+                          }
+                        },
+                        "routeDestId": {
+                          "type": "integer",
+                          "description": " 진행방향 마지막 정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeDestName": {
+                          "type": "string",
+                          "description": " 진행방향 마지막 정류소명 ( 예. ",
+                          "properties": {
+                          }
+                        },
+                        "routeId": {
+                          "type": "integer",
+                          "description": " 노선아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeName": {
+                          "type": "string",
+                          "description": " 노선명",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeCd": {
+                          "type": "integer",
+                          "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스)",
+                          "properties": {
+                          }
+                        },
+                        "staOrder": {
+                          "type": "integer",
+                          "description": " 정류소순번 (요청변수 정류소가 노선의 몇번째 정류소인지 나타냄)",
+                          "properties": {
+                          }
+                        },
+                        "stationId": {
+                          "type": "integer",
+                          "description": " 정류소아이디 (요청변수 정류소 아이디)",
+                          "properties": {
+                          }
+                        },
+                        "stationNm1": {
+                          "type": "string",
+                          "description": " 첫번째차량 위치 정류소명",
+                          "properties": {
+                          }
+                        },
+                        "stationNm2": {
+                          "type": "string",
+                          "description": " 두번째차량 위치 정류소명",
+                          "properties": {
+                          }
+                        },
+                        "taglessCd1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                          "properties": {
+                          }
+                        },
+                        "taglessCd2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                          "properties": {
+                          }
+                        },
+                        "turnSeq": {
+                          "type": "integer",
+                          "description": " 노선의 회차점 순번",
+                          "properties": {
+                          }
+                        },
+                        "vehId1": {
+                          "type": "integer",
+                          "description": " 첫번째 차량 차량아이디",
+                          "properties": {
+                          }
+                        },
+                        "vehId2": {
+                          "type": "integer",
+                          "description": " 두번째 차량 차량아이디",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "버스도착정보항목조회",
+        "description": "해당 정류소(정류소ID)에 정차하는 특정 노선(노선ID)의 도착 정보를 조회한다",
+        "operationId": "getBusArrivalItemv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "stationId",
+          "description": "정류소아이디",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "routeId",
+          "description": "노선아이디",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "staOrder",
+          "description": "노선의 정류소 순번",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "getBusArrivalListv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "resultMessage": {
+              "type": "string",
+              "description": "응답메시지"
+            },
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "응답코드"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busArrivalList": {
+              "type": "object",
+              "description": "busArrivalList",
+              "properties": {
+                "stateCd2": {
+                  "type": "integer",
+                  "description": " 두번째차량 상태코드 (0:교차로통과, 1:정류소 도착, 2:정류소 출발)"
+                },
+                "crowded1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)"
+                },
+                "crowded2": {
+                  "type": "integer",
+                  "description": " 두번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)"
+                },
+                "flag": {
+                  "type": "string",
+                  "description": " 상태구분(RUN:운행중 PASS:운행중 STOP:운행종료 WAIT:회차지대기)"
+                },
+                "locationNo1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 위치 정보 (몇번째전 정류소)"
+                },
+                "locationNo2": {
+                  "type": "integer",
+                  "description": " 두번째차량 위치 정보 (몇번째전 정류소)"
+                },
+                "lowPlate1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)"
+                },
+                "lowPlate2": {
+                  "type": "integer",
+                  "description": " 두번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)"
+                },
+                "plateNo1": {
+                  "type": "string",
+                  "description": " 첫번째차량 차량번호"
+                },
+                "plateNo2": {
+                  "type": "string",
+                  "description": " 두번째차량 차량번호"
+                },
+                "predictTime1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 도착예상시간 (몇 분후 도착예정. 분단위)"
+                },
+                "predictTime2": {
+                  "type": "integer",
+                  "description": " 두번째차량 도착예상시간 (몇 분후 도착예정. 분단위)"
+                },
+                "remainSeatCnt1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)"
+                },
+                "remainSeatCnt2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)"
+                },
+                "routeDestId": {
+                  "type": "integer",
+                  "description": " 진행방향 마지막 정류소아이디"
+                },
+                "routeDestName": {
+                  "type": "string",
+                  "description": " 진행방향 마지막 정류소명 ( 예. "
+                },
+                "routeId": {
+                  "type": "integer",
+                  "description": " 노선아이디"
+                },
+                "routeName": {
+                  "type": "string",
+                  "description": " 노선명"
+                },
+                "routeTypeCd": {
+                  "type": "integer",
+                  "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스)"
+                },
+                "staOrder": {
+                  "type": "integer",
+                  "description": " 정류소순번 (요청변수 정류소가 노선의 몇번째 정류소인지 나타냄)"
+                },
+                "stationId": {
+                  "type": "integer",
+                  "description": " 정류소아이디 (요청변수 정류소 아이디)"
+                },
+                "stationNm1": {
+                  "type": "string",
+                  "description": " 첫번째차량 위치 정류소명"
+                },
+                "stationNm2": {
+                  "type": "string",
+                  "description": " 두번째차량 위치 정류소명"
+                },
+                "taglessCd1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)"
+                },
+                "taglessCd2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)"
+                },
+                "turnSeq": {
+                  "type": "integer",
+                  "description": " 노선의 회차점 순번"
+                },
+                "vehId1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 차량아이디"
+                },
+                "vehId2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 차량아이디"
+                },
+                "predictTimeSec1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 도착예상시간 (몇 초후 도착예정. 초단위)"
+                },
+                "predictTimeSec2": {
+                  "type": "integer",
+                  "description": " 두번째차량 도착예상시간 (몇 초후 도착예정. 초단위)"
+                },
+                "stateCd1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 상태코드 (0:교차로통과, 1:정류소 도착, 2:정류소 출발)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "getBusArrivalItemv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "resultMessage": {
+              "type": "string",
+              "description": "응답메시지"
+            },
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "응답코드"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busArrivalItem": {
+              "type": "object",
+              "description": "busArrivalItem",
+              "properties": {
+                "predictTimeSec1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 도착예상시간 (몇 초후 도착예정. 초단위)"
+                },
+                "predictTimeSec2": {
+                  "type": "integer",
+                  "description": " 두번째차량 도착예상시간 (몇 초후 도착예정. 초단위)"
+                },
+                "crowded1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)"
+                },
+                "crowded2": {
+                  "type": "integer",
+                  "description": " 두번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)"
+                },
+                "flag": {
+                  "type": "string",
+                  "description": " 상태구분(RUN:운행중 PASS:운행중 STOP:운행종료 WAIT:회차지대기)"
+                },
+                "locationNo1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 위치 정보 (몇번째전 정류소)"
+                },
+                "locationNo2": {
+                  "type": "integer",
+                  "description": " 두번째차량 위치 정보 (몇번째전 정류소)"
+                },
+                "lowPlate1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)"
+                },
+                "lowPlate2": {
+                  "type": "integer",
+                  "description": " 두번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)"
+                },
+                "plateNo1": {
+                  "type": "string",
+                  "description": " 첫번째차량 차량번호"
+                },
+                "plateNo2": {
+                  "type": "string",
+                  "description": " 두번째차량 차량번호"
+                },
+                "predictTime1": {
+                  "type": "integer",
+                  "description": " 첫번째차량 도착예상시간 (몇 분후 도착예정. 분단위)"
+                },
+                "predictTime2": {
+                  "type": "integer",
+                  "description": " 두번째차량 도착예상시간 (몇 분후 도착예정. 분단위)"
+                },
+                "remainSeatCnt1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)"
+                },
+                "remainSeatCnt2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)"
+                },
+                "routeDestId": {
+                  "type": "integer",
+                  "description": " 진행방향 마지막 정류소아이디"
+                },
+                "routeDestName": {
+                  "type": "string",
+                  "description": " 진행방향 마지막 정류소명 ( 예. "
+                },
+                "routeId": {
+                  "type": "integer",
+                  "description": " 노선아이디"
+                },
+                "routeName": {
+                  "type": "string",
+                  "description": " 노선명"
+                },
+                "routeTypeCd": {
+                  "type": "integer",
+                  "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스)"
+                },
+                "staOrder": {
+                  "type": "integer",
+                  "description": " 정류소순번 (요청변수 정류소가 노선의 몇번째 정류소인지 나타냄)"
+                },
+                "stationId": {
+                  "type": "integer",
+                  "description": " 정류소아이디 (요청변수 정류소 아이디)"
+                },
+                "stationNm1": {
+                  "type": "string",
+                  "description": " 첫번째차량 위치 정류소명"
+                },
+                "stationNm2": {
+                  "type": "string",
+                  "description": " 두번째차량 위치 정류소명"
+                },
+                "taglessCd1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)"
+                },
+                "taglessCd2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)"
+                },
+                "turnSeq": {
+                  "type": "integer",
+                  "description": " 노선의 회차점 순번"
+                },
+                "vehId1": {
+                  "type": "integer",
+                  "description": " 첫번째 차량 차량아이디"
+                },
+                "vehId2": {
+                  "type": "integer",
+                  "description": " 두번째 차량 차량아이디"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "swaggerOprtinVOs": [
+    {
+      "oprtinUrl": "http://openapi.gbis.go.kr/ws/rest/busarrivalservice/v2",
+      "oprtinNm": "버스도착정보항목조회",
+      "oprtinDc": "해당 정류소(정류소ID)에 정차하는 특정 노선(노선ID)의 도착 정보를 조회한다",
+      "gwSvcNm": "getBusArrivalItemv2",
+      "operationId": "getBusArrivalItemv2",
+      "publicDataTyDetailCode": "PRDE02",
+      "reqList": [
+        {
+          "paramtrNm": "serviceKey",
+          "paramtrDc": "인증키(공공데이포털 발급)",
+          "paramtrBassValue": "인증키(URL Encode)",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "stationId",
+          "paramtrDc": "정류소아이디",
+          "paramtrBassValue": "200000177",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "routeId",
+          "paramtrDc": "노선아이디",
+          "paramtrBassValue": "200000037",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "staOrder",
+          "paramtrDc": "노선의 정류소 순번",
+          "paramtrBassValue": "19",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "format",
+          "paramtrDc": "응답 포멧(json/xml)",
+          "paramtrBassValue": "json",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        }
+      ],
+      "resList": [
+        {
+          "paramtrNm": "comMsgHeader",
+          "paramtrDc": "공통메시지 헤더",
+          "arrayYn": "N",
+          "paramtrDefNm": "",
+          "paramtrTy": "string",
+          "paramtrDivision": "옵션",
+          "ck": true
+        },
+        {
+          "paramtrNm": "msgHeader",
+          "paramtrDc": "응답메시지 헤더",
+          "arrayYn": "N",
+          "paramtrDefNm": "#/definitions/response_msgHeader",
+          "subDefNm": "response_msgHeader",
+          "paramtrTy": "object",
+          "paramtrDivision": "필수",
+          "ck": true,
+          "subParam": [
+            {
+              "paramtrNm": "resultMessage",
+              "paramtrDc": "응답메시지",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "string",
+              "paramtrDivision": "필수",
+              "ck": true
+            },
+            {
+              "paramtrNm": "queryTime",
+              "paramtrDc": "응답시간",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "string",
+              "paramtrDivision": "옵션",
+              "ck": true
+            },
+            {
+              "paramtrNm": "resultCode",
+              "paramtrDc": "응답코드",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "integer",
+              "paramtrDivision": "필수",
+              "ck": true
+            }
+          ]
+        },
+        {
+          "paramtrNm": "msgBody",
+          "paramtrDc": "응답메시지 바디",
+          "arrayYn": "N",
+          "paramtrDefNm": "#/definitions/response_msgBody",
+          "subDefNm": "response_msgBody",
+          "paramtrTy": "object",
+          "paramtrDivision": "필수",
+          "ck": true,
+          "subParam": [
+            {
+              "paramtrNm": "busArrivalItem",
+              "paramtrDc": "busArrivalItem",
+              "arrayYn": "N",
+              "paramtrDefNm": "#/definitions/busArrivalItem_item",
+              "subDefNm": "busArrivalItem_item",
+              "paramtrTy": "object",
+              "paramtrDivision": "옵션",
+              "ck": true,
+              "subParam": [
+                {
+                  "paramtrNm": "predictTimeSec1",
+                  "paramtrDc": " 첫번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "predictTimeSec2",
+                  "paramtrDc": " 두번째차량 도착예상시간 (몇 초후 도착예정. 초단위)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "crowded1",
+                  "paramtrDc": " 첫번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "crowded2",
+                  "paramtrDc": " 두번째차량 차내혼잡도 (1:여유, 2:보통, 3:혼잡, 4:매우혼잡) 차내혼잡도 제공노선유형 (13:일반형시내버스, 15:따복형시내버스, 23:일반형농어촌버스)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "flag",
+                  "paramtrDc": " 상태구분(RUN:운행중 PASS:운행중 STOP:운행종료 WAIT:회차지대기)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "locationNo1",
+                  "paramtrDc": " 첫번째차량 위치 정보 (몇번째전 정류소)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "locationNo2",
+                  "paramtrDc": " 두번째차량 위치 정보 (몇번째전 정류소)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "lowPlate1",
+                  "paramtrDc": " 첫번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "lowPlate2",
+                  "paramtrDc": " 두번째차량 특수차량여부 (0: 일반버스, 1: 저상버스, 2: 2층버스, 5: 전세버스, 6: 예약버스, 7: 트롤리)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "plateNo1",
+                  "paramtrDc": " 첫번째차량 차량번호",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "plateNo2",
+                  "paramtrDc": " 두번째차량 차량번호",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "predictTime1",
+                  "paramtrDc": " 첫번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "predictTime2",
+                  "paramtrDc": " 두번째차량 도착예상시간 (몇 분후 도착예정. 분단위)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "remainSeatCnt1",
+                  "paramtrDc": " 첫번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "remainSeatCnt2",
+                  "paramtrDc": " 두번째 차량 차내빈자리수 (-1:정보없음, 0~:빈자리 수) 차내빈자리수 제공노선유형 (11: 직행좌석형시내버스, 12:좌석형시내버스, 14: 광역급행형시내버스, 16: 경기순환버스, 17: 준공영제직행좌석시내버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "routeDestId",
+                  "paramtrDc": " 진행방향 마지막 정류소아이디",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "routeDestName",
+                  "paramtrDc": " 진행방향 마지막 정류소명 ( 예. ",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "routeId",
+                  "paramtrDc": " 노선아이디",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "필수",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "routeName",
+                  "paramtrDc": " 노선명",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "필수",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "routeTypeCd",
+                  "paramtrDc": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "staOrder",
+                  "paramtrDc": " 정류소순번 (요청변수 정류소가 노선의 몇번째 정류소인지 나타냄)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "stationId",
+                  "paramtrDc": " 정류소아이디 (요청변수 정류소 아이디)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "필수",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "stationNm1",
+                  "paramtrDc": " 첫번째차량 위치 정류소명",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "stationNm2",
+                  "paramtrDc": " 두번째차량 위치 정류소명",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "string",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "taglessCd1",
+                  "paramtrDc": " 첫번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "taglessCd2",
+                  "paramtrDc": " 두번째 차량 태그리스 서비스 제공여부 (0:일반차량, 1:태그리스차량)",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "turnSeq",
+                  "paramtrDc": " 노선의 회차점 순번",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "vehId1",
+                  "paramtrDc": " 첫번째 차량 차량아이디",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "vehId2",
+                  "paramtrDc": " 두번째 차량 차량아이디",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

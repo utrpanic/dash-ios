@@ -1,0 +1,1449 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "경기도 버스의 실시간 운행정보를 수집하여 이용자에게 제공하는 시스템.",
+    "version": "1.0.0",
+    "title": "경기도_버스노선 조회"
+  },
+  "host": "apis.data.go.kr/6410000/busrouteservice/v2",
+  "basePath": "",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/getBusRouteInfoItemv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "결과코드",
+                      "properties": {
+                      }
+                    },
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "결과메시지",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busRouteInfoItem": {
+                      "type": "object",
+                      "description": "busRouteInfoItem",
+                      "properties": {
+                        "sunPeekAlloc": {
+                          "type": "integer",
+                          "description": "일요일 최소 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "adminName": {
+                          "type": "string",
+                          "description": "인면허기관명",
+                          "properties": {
+                          }
+                        },
+                        "companyId": {
+                          "type": "integer",
+                          "description": "운수업체아이디",
+                          "properties": {
+                          }
+                        },
+                        "companyName": {
+                          "type": "string",
+                          "description": "운수업체명",
+                          "properties": {
+                          }
+                        },
+                        "companyTel": {
+                          "type": "string",
+                          "description": "운수업체 전화번호",
+                          "properties": {
+                          }
+                        },
+                        "districtCd": {
+                          "type": "integer",
+                          "description": "관할지역코드 (1:서울,2:경기,3:인천)",
+                          "properties": {
+                          }
+                        },
+                        "downFirstTime": {
+                          "type": "integer",
+                          "description": "평일 종점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "downLastTime": {
+                          "type": "integer",
+                          "description": "평일 종점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "endMobileNo": {
+                          "type": "integer",
+                          "description": "종점정류소번호",
+                          "properties": {
+                          }
+                        },
+                        "endStationId": {
+                          "type": "integer",
+                          "description": "종점정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "endStationName": {
+                          "type": "string",
+                          "description": "종점정류소명",
+                          "properties": {
+                          }
+                        },
+                        "garageName": {
+                          "type": "string",
+                          "description": "차고지명",
+                          "properties": {
+                          }
+                        },
+                        "garageTel": {
+                          "type": "string",
+                          "description": "차고지전화번호",
+                          "properties": {
+                          }
+                        },
+                        "multiFlag": {
+                          "type": "integer",
+                          "description": " 공동배차 ( 2개 이상의 운수사가 공동배차하는 노선인지 여부.  Y: 공동배차노선임, N: 공동배차노선아님)",
+                          "properties": {
+                          }
+                        },
+                        "peekAlloc": {
+                          "type": "integer",
+                          "description": " 평일 최소 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "regionName": {
+                          "type": "string",
+                          "description": "운행지역",
+                          "properties": {
+                          }
+                        },
+                        "routeId": {
+                          "type": "integer",
+                          "description": "노선아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeName": {
+                          "type": "string",
+                          "description": "노선번호",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeCd": {
+                          "type": "integer",
+                          "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스) ",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeName": {
+                          "type": "string",
+                          "description": "노선유형명",
+                          "properties": {
+                          }
+                        },
+                        "satDownFirstTime": {
+                          "type": "integer",
+                          "description": " 토요일 종점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "satDownLastTime": {
+                          "type": "integer",
+                          "description": " 토요일 종점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "satNPeekAlloc": {
+                          "type": "integer",
+                          "description": "토요일 최대 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "satPeekAlloc": {
+                          "type": "integer",
+                          "description": "토요일 최소 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "satUpFirstTime": {
+                          "type": "integer",
+                          "description": "토요일 기점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "satUpLastTime": {
+                          "type": "integer",
+                          "description": "토요일 기점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "startStationId": {
+                          "type": "integer",
+                          "description": "기점정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "startStationName": {
+                          "type": "string",
+                          "description": "기점정류소명",
+                          "properties": {
+                          }
+                        },
+                        "startMobileNo": {
+                          "type": "integer",
+                          "description": "기점정류소번호",
+                          "properties": {
+                          }
+                        },
+                        "sunDownFirstTime": {
+                          "type": "integer",
+                          "description": "일요일 종점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "sunDownLastTime": {
+                          "type": "integer",
+                          "description": "일요일 종점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "sunNPeekAlloc": {
+                          "type": "integer",
+                          "description": "일요일 최대 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "sunUpFirstTime": {
+                          "type": "integer",
+                          "description": "일요일 기점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "sunUpLastTime": {
+                          "type": "integer",
+                          "description": "일요일 기점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "turnStID": {
+                          "type": "integer",
+                          "description": "회차정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "turnStNm": {
+                          "type": "string",
+                          "description": "회차정류소명",
+                          "properties": {
+                          }
+                        },
+                        "upFirstTime": {
+                          "type": "integer",
+                          "description": "평일 기점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "upLastTime": {
+                          "type": "integer",
+                          "description": "평일 기점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "weDownFirstTime": {
+                          "type": "integer",
+                          "description": "공휴일 종점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "weDownLastTime": {
+                          "type": "integer",
+                          "description": "공휴일 종점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "weNPeekAlloc": {
+                          "type": "integer",
+                          "description": "공휴일 최대 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "wePeekAlloc": {
+                          "type": "integer",
+                          "description": "공휴일 최소 배차시간(분)",
+                          "properties": {
+                          }
+                        },
+                        "weUpFirstTime": {
+                          "type": "integer",
+                          "description": "공휴일 기점 첫차시간",
+                          "properties": {
+                          }
+                        },
+                        "weUpLastTime": {
+                          "type": "integer",
+                          "description": "공휴일 기점 막차시간",
+                          "properties": {
+                          }
+                        },
+                        "nPeekAlloc": {
+                          "type": "integer",
+                          "description": "평일 최대 배차시간(분)",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선정보항목조회",
+        "description": "노선ID에 해당하는 노선의 기본 정보 및 배차 정보를 조회한다",
+        "operationId": "getBusRouteInfoItemv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "routeId",
+          "description": "노선ID",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    },
+    "/getBusRouteStationListv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "결과코드",
+                      "properties": {
+                      }
+                    },
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "결과메시지",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busRouteStationList": {
+                      "type": "object",
+                      "description": "busRouteStationList",
+                      "properties": {
+                        "centerYn": {
+                          "type": "string",
+                          "description": " 중앙차로 여부 (N:일반,Y:중앙차로)",
+                          "properties": {
+                          }
+                        },
+                        "districtCd": {
+                          "type": "integer",
+                          "description": " 노선의 관할지역코드 (1:서울,2:경기,3:인천)",
+                          "properties": {
+                          }
+                        },
+                        "mobileNo": {
+                          "type": "integer",
+                          "description": " 정류소번호",
+                          "properties": {
+                          }
+                        },
+                        "regionName": {
+                          "type": "string",
+                          "description": " 정류소 위치 지역명",
+                          "properties": {
+                          }
+                        },
+                        "stationId": {
+                          "type": "integer",
+                          "description": " 정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "stationName": {
+                          "type": "string",
+                          "description": " 정류소명",
+                          "properties": {
+                          }
+                        },
+                        "x": {
+                          "type": "number",
+                          "description": " 정류소 X좌표",
+                          "properties": {
+                          }
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": " 정류소 Y좌표",
+                          "properties": {
+                          }
+                        },
+                        "adminName": {
+                          "type": "string",
+                          "description": " 정류소 관할기관",
+                          "properties": {
+                          }
+                        },
+                        "stationSeq": {
+                          "type": "integer",
+                          "description": " 노선의 정류소순번",
+                          "properties": {
+                          }
+                        },
+                        "turnSeq": {
+                          "type": "integer",
+                          "description": " 회차점순번",
+                          "properties": {
+                          }
+                        },
+                        "turnYn": {
+                          "type": "string",
+                          "description": " 회차점여부",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "경유정류소목록조회",
+        "description": "노선ID에 해당하는 노선의 경유 정류소 목록을 조회한다",
+        "operationId": "getBusRouteStationListv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "routeId",
+          "description": "정류소아이디",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    },
+    "/getBusRouteListv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "결과코드",
+                      "properties": {
+                      }
+                    },
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "결과메시지",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busRouteList": {
+                      "type": "object",
+                      "description": "busRouteList",
+                      "properties": {
+                        "adminName": {
+                          "type": "string",
+                          "description": " 인면허기관명",
+                          "properties": {
+                          }
+                        },
+                        "districtCd": {
+                          "type": "integer",
+                          "description": " 관할지역코드 (1:서울,2:경기,3:인천)",
+                          "properties": {
+                          }
+                        },
+                        "endStationId": {
+                          "type": "integer",
+                          "description": " 종점정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "endStationName": {
+                          "type": "string",
+                          "description": " 종점정류소명",
+                          "properties": {
+                          }
+                        },
+                        "regionName": {
+                          "type": "string",
+                          "description": " 운행지역",
+                          "properties": {
+                          }
+                        },
+                        "routeId": {
+                          "type": "integer",
+                          "description": " 노선아이디",
+                          "properties": {
+                          }
+                        },
+                        "routeName": {
+                          "type": "string",
+                          "description": " 노선번호",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeCd": {
+                          "type": "integer",
+                          "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스) ",
+                          "properties": {
+                          }
+                        },
+                        "routeTypeName": {
+                          "type": "string",
+                          "description": " 노선유형명",
+                          "properties": {
+                          }
+                        },
+                        "startStationId": {
+                          "type": "integer",
+                          "description": " 기점정류소아이디",
+                          "properties": {
+                          }
+                        },
+                        "startStationName": {
+                          "type": "string",
+                          "description": " 기점정류소명",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선번호목록조회",
+        "description": "노선번호에 해당하는 노선의 목록을 조회한다",
+        "operationId": "getBusRouteListv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "keyword",
+          "description": "검색할 노선번호",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    },
+    "/getBusRouteLineListv2": {
+      "get": {
+        "responses": {
+          "0": {
+            "description": "정상적으로 처리되었습니다."
+          },
+          "1": {
+            "description": "시스템 에러가 발생하였습니다."
+          },
+          "2": {
+            "description": "필수 요청 Parameter 가 존재하지 않습니다."
+          },
+          "4": {
+            "description": "결과가 존재하지 않습니다."
+          },
+          "200": {
+            "description": "성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comMsgHeader": {
+                  "type": "string",
+                  "description": "공통메시지 헤더",
+                  "properties": {
+                  }
+                },
+                "msgHeader": {
+                  "type": "object",
+                  "description": "응답메시지 헤더",
+                  "properties": {
+                    "queryTime": {
+                      "type": "string",
+                      "description": "응답시간",
+                      "properties": {
+                      }
+                    },
+                    "resultCode": {
+                      "type": "integer",
+                      "description": "결과코드",
+                      "properties": {
+                      }
+                    },
+                    "resultMessage": {
+                      "type": "string",
+                      "description": "결과메시지",
+                      "properties": {
+                      }
+                    }
+                  }
+                },
+                "msgBody": {
+                  "type": "object",
+                  "description": "응답메시지 바디",
+                  "properties": {
+                    "busRouteLineList": {
+                      "type": "object",
+                      "description": "busRouteLineList",
+                      "properties": {
+                        "lineSeq": {
+                          "type": "integer",
+                          "description": " 형상 좌표 순서",
+                          "properties": {
+                          }
+                        },
+                        "x": {
+                          "type": "number",
+                          "description": " X좌표",
+                          "properties": {
+                          }
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": " Y좌표",
+                          "properties": {
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "response"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선형상정보목록조회",
+        "description": "노선ID에 해당하는 노선의 형상정보를 조회한다.",
+        "operationId": "getBusRouteLineListv2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "serviceKey",
+          "description": "인증키(공공데이포털 발급)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "routeId",
+          "description": "정류소아이디",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        },
+        {
+          "name": "format",
+          "description": "응답 포멧(json/xml)",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "getBusRouteInfoItemv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "결과코드"
+            },
+            "resultMessage": {
+              "type": "string",
+              "description": "결과메시지"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busRouteInfoItem": {
+              "type": "object",
+              "description": "busRouteInfoItem",
+              "properties": {
+                "sunPeekAlloc": {
+                  "type": "integer",
+                  "description": "일요일 최소 배차시간(분)"
+                },
+                "adminName": {
+                  "type": "string",
+                  "description": "인면허기관명"
+                },
+                "companyId": {
+                  "type": "integer",
+                  "description": "운수업체아이디"
+                },
+                "companyName": {
+                  "type": "string",
+                  "description": "운수업체명"
+                },
+                "companyTel": {
+                  "type": "string",
+                  "description": "운수업체 전화번호"
+                },
+                "districtCd": {
+                  "type": "integer",
+                  "description": "관할지역코드 (1:서울,2:경기,3:인천)"
+                },
+                "downFirstTime": {
+                  "type": "integer",
+                  "description": "평일 종점 첫차시간"
+                },
+                "downLastTime": {
+                  "type": "integer",
+                  "description": "평일 종점 막차시간"
+                },
+                "endMobileNo": {
+                  "type": "integer",
+                  "description": "종점정류소번호"
+                },
+                "endStationId": {
+                  "type": "integer",
+                  "description": "종점정류소아이디"
+                },
+                "endStationName": {
+                  "type": "string",
+                  "description": "종점정류소명"
+                },
+                "garageName": {
+                  "type": "string",
+                  "description": "차고지명"
+                },
+                "garageTel": {
+                  "type": "string",
+                  "description": "차고지전화번호"
+                },
+                "multiFlag": {
+                  "type": "integer",
+                  "description": " 공동배차 ( 2개 이상의 운수사가 공동배차하는 노선인지 여부.  Y: 공동배차노선임, N: 공동배차노선아님)"
+                },
+                "peekAlloc": {
+                  "type": "integer",
+                  "description": " 평일 최소 배차시간(분)"
+                },
+                "regionName": {
+                  "type": "string",
+                  "description": "운행지역"
+                },
+                "routeId": {
+                  "type": "integer",
+                  "description": "노선아이디"
+                },
+                "routeName": {
+                  "type": "string",
+                  "description": "노선번호"
+                },
+                "routeTypeCd": {
+                  "type": "integer",
+                  "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스) "
+                },
+                "routeTypeName": {
+                  "type": "string",
+                  "description": "노선유형명"
+                },
+                "satDownFirstTime": {
+                  "type": "integer",
+                  "description": " 토요일 종점 첫차시간"
+                },
+                "satDownLastTime": {
+                  "type": "integer",
+                  "description": " 토요일 종점 막차시간"
+                },
+                "satNPeekAlloc": {
+                  "type": "integer",
+                  "description": "토요일 최대 배차시간(분)"
+                },
+                "satPeekAlloc": {
+                  "type": "integer",
+                  "description": "토요일 최소 배차시간(분)"
+                },
+                "satUpFirstTime": {
+                  "type": "integer",
+                  "description": "토요일 기점 첫차시간"
+                },
+                "satUpLastTime": {
+                  "type": "integer",
+                  "description": "토요일 기점 막차시간"
+                },
+                "startStationId": {
+                  "type": "integer",
+                  "description": "기점정류소아이디"
+                },
+                "startStationName": {
+                  "type": "string",
+                  "description": "기점정류소명"
+                },
+                "startMobileNo": {
+                  "type": "integer",
+                  "description": "기점정류소번호"
+                },
+                "sunDownFirstTime": {
+                  "type": "integer",
+                  "description": "일요일 종점 첫차시간"
+                },
+                "sunDownLastTime": {
+                  "type": "integer",
+                  "description": "일요일 종점 막차시간"
+                },
+                "sunNPeekAlloc": {
+                  "type": "integer",
+                  "description": "일요일 최대 배차시간(분)"
+                },
+                "sunUpFirstTime": {
+                  "type": "integer",
+                  "description": "일요일 기점 첫차시간"
+                },
+                "sunUpLastTime": {
+                  "type": "integer",
+                  "description": "일요일 기점 막차시간"
+                },
+                "turnStID": {
+                  "type": "integer",
+                  "description": "회차정류소아이디"
+                },
+                "turnStNm": {
+                  "type": "string",
+                  "description": "회차정류소명"
+                },
+                "upFirstTime": {
+                  "type": "integer",
+                  "description": "평일 기점 첫차시간"
+                },
+                "upLastTime": {
+                  "type": "integer",
+                  "description": "평일 기점 막차시간"
+                },
+                "weDownFirstTime": {
+                  "type": "integer",
+                  "description": "공휴일 종점 첫차시간"
+                },
+                "weDownLastTime": {
+                  "type": "integer",
+                  "description": "공휴일 종점 막차시간"
+                },
+                "weNPeekAlloc": {
+                  "type": "integer",
+                  "description": "공휴일 최대 배차시간(분)"
+                },
+                "wePeekAlloc": {
+                  "type": "integer",
+                  "description": "공휴일 최소 배차시간(분)"
+                },
+                "weUpFirstTime": {
+                  "type": "integer",
+                  "description": "공휴일 기점 첫차시간"
+                },
+                "weUpLastTime": {
+                  "type": "integer",
+                  "description": "공휴일 기점 막차시간"
+                },
+                "nPeekAlloc": {
+                  "type": "integer",
+                  "description": "평일 최대 배차시간(분)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "getBusRouteStationListv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "결과코드"
+            },
+            "resultMessage": {
+              "type": "string",
+              "description": "결과메시지"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busRouteStationList": {
+              "type": "object",
+              "description": "busRouteStationList",
+              "properties": {
+                "centerYn": {
+                  "type": "string",
+                  "description": " 중앙차로 여부 (N:일반,Y:중앙차로)"
+                },
+                "districtCd": {
+                  "type": "integer",
+                  "description": " 노선의 관할지역코드 (1:서울,2:경기,3:인천)"
+                },
+                "mobileNo": {
+                  "type": "integer",
+                  "description": " 정류소번호"
+                },
+                "regionName": {
+                  "type": "string",
+                  "description": " 정류소 위치 지역명"
+                },
+                "stationId": {
+                  "type": "integer",
+                  "description": " 정류소아이디"
+                },
+                "stationName": {
+                  "type": "string",
+                  "description": " 정류소명"
+                },
+                "x": {
+                  "type": "number",
+                  "description": " 정류소 X좌표"
+                },
+                "y": {
+                  "type": "number",
+                  "description": " 정류소 Y좌표"
+                },
+                "adminName": {
+                  "type": "string",
+                  "description": " 정류소 관할기관"
+                },
+                "stationSeq": {
+                  "type": "integer",
+                  "description": " 노선의 정류소순번"
+                },
+                "turnSeq": {
+                  "type": "integer",
+                  "description": " 회차점순번"
+                },
+                "turnYn": {
+                  "type": "string",
+                  "description": " 회차점여부"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "getBusRouteListv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "결과코드"
+            },
+            "resultMessage": {
+              "type": "string",
+              "description": "결과메시지"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busRouteList": {
+              "type": "object",
+              "description": "busRouteList",
+              "properties": {
+                "adminName": {
+                  "type": "string",
+                  "description": " 인면허기관명"
+                },
+                "districtCd": {
+                  "type": "integer",
+                  "description": " 관할지역코드 (1:서울,2:경기,3:인천)"
+                },
+                "endStationId": {
+                  "type": "integer",
+                  "description": " 종점정류소아이디"
+                },
+                "endStationName": {
+                  "type": "string",
+                  "description": " 종점정류소명"
+                },
+                "regionName": {
+                  "type": "string",
+                  "description": " 운행지역"
+                },
+                "routeId": {
+                  "type": "integer",
+                  "description": " 노선아이디"
+                },
+                "routeName": {
+                  "type": "string",
+                  "description": " 노선번호"
+                },
+                "routeTypeCd": {
+                  "type": "integer",
+                  "description": " 노선유형코드 (11: 직행좌석형시내버스, 12:좌석형시내버스, 13:일반형시내버스, 14: 광역급행형시내버스, 15: 따복형시내버스, 16: 경기순환버스, 21: 직행좌석형농어촌버스, 22: 좌석형농어촌버스, 23:일반형농어촌버스, 30: 마을버스, 41: 고속형시외버스, 42: 좌석형시외버스, 43: 일반형시외버스, 51: 리무진공항버스, 52: 좌석형공항버스, 53: 일반형공항버스) "
+                },
+                "routeTypeName": {
+                  "type": "string",
+                  "description": " 노선유형명"
+                },
+                "startStationId": {
+                  "type": "integer",
+                  "description": " 기점정류소아이디"
+                },
+                "startStationName": {
+                  "type": "string",
+                  "description": " 기점정류소명"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "getBusRouteLineListv2_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "string",
+          "description": "공통메시지 헤더"
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답메시지 헤더",
+          "properties": {
+            "queryTime": {
+              "type": "string",
+              "description": "응답시간"
+            },
+            "resultCode": {
+              "type": "integer",
+              "description": "결과코드"
+            },
+            "resultMessage": {
+              "type": "string",
+              "description": "결과메시지"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답메시지 바디",
+          "properties": {
+            "busRouteLineList": {
+              "type": "object",
+              "description": "busRouteLineList",
+              "properties": {
+                "lineSeq": {
+                  "type": "integer",
+                  "description": " 형상 좌표 순서"
+                },
+                "x": {
+                  "type": "number",
+                  "description": " X좌표"
+                },
+                "y": {
+                  "type": "number",
+                  "description": " Y좌표"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "swaggerOprtinVOs": [
+    {
+      "oprtinUrl": "http://openapi.gbis.go.kr/ws/rest/busrouteservice/v2/line",
+      "oprtinNm": "노선형상정보목록조회",
+      "oprtinDc": "노선ID에 해당하는 노선의 형상정보를 조회한다.",
+      "gwSvcNm": "getBusRouteLineListv2",
+      "operationId": "getBusRouteLineListv2",
+      "publicDataTyDetailCode": "PRDE02",
+      "reqList": [
+        {
+          "paramtrNm": "serviceKey",
+          "paramtrDc": "인증키(공공데이포털 발급)",
+          "paramtrBassValue": "인증키(URL Encode)",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "routeId",
+          "paramtrDc": "정류소아이디",
+          "paramtrBassValue": "214000018",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        },
+        {
+          "paramtrNm": "format",
+          "paramtrDc": "응답 포멧(json/xml)",
+          "paramtrBassValue": "json",
+          "paramtrTy": "string",
+          "paramtrDivision": "필수",
+          "ck": true
+        }
+      ],
+      "resList": [
+        {
+          "paramtrNm": "comMsgHeader",
+          "paramtrDc": "공통메시지 헤더",
+          "arrayYn": "N",
+          "paramtrDefNm": "",
+          "paramtrTy": "string",
+          "paramtrDivision": "옵션",
+          "ck": true
+        },
+        {
+          "paramtrNm": "msgHeader",
+          "paramtrDc": "응답메시지 헤더",
+          "arrayYn": "N",
+          "paramtrDefNm": "#/definitions/response_msgHeader",
+          "subDefNm": "response_msgHeader",
+          "paramtrTy": "object",
+          "paramtrDivision": "필수",
+          "ck": true,
+          "subParam": [
+            {
+              "paramtrNm": "queryTime",
+              "paramtrDc": "응답시간",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "string",
+              "paramtrDivision": "옵션",
+              "ck": true
+            },
+            {
+              "paramtrNm": "resultCode",
+              "paramtrDc": "결과코드",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "integer",
+              "paramtrDivision": "필수",
+              "ck": true
+            },
+            {
+              "paramtrNm": "resultMessage",
+              "paramtrDc": "결과메시지",
+              "arrayYn": "N",
+              "paramtrDefNm": "",
+              "paramtrTy": "string",
+              "paramtrDivision": "필수",
+              "ck": true
+            }
+          ]
+        },
+        {
+          "paramtrNm": "msgBody",
+          "paramtrDc": "응답메시지 바디",
+          "arrayYn": "N",
+          "paramtrDefNm": "#/definitions/response_msgBody",
+          "subDefNm": "response_msgBody",
+          "paramtrTy": "object",
+          "paramtrDivision": "필수",
+          "ck": true,
+          "subParam": [
+            {
+              "paramtrNm": "busRouteLineList",
+              "paramtrDc": "busRouteLineList",
+              "arrayYn": "N",
+              "paramtrDefNm": "#/definitions/busRouteLineList_item",
+              "subDefNm": "busRouteLineList_item",
+              "paramtrTy": "object",
+              "paramtrDivision": "필수",
+              "ck": true,
+              "subParam": [
+                {
+                  "paramtrNm": "lineSeq",
+                  "paramtrDc": " 형상 좌표 순서",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "integer",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "x",
+                  "paramtrDc": " X좌표",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "number",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                },
+                {
+                  "paramtrNm": "y",
+                  "paramtrDc": " Y좌표",
+                  "arrayYn": "N",
+                  "paramtrDefNm": "",
+                  "paramtrTy": "number",
+                  "paramtrDivision": "옵션",
+                  "ck": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
