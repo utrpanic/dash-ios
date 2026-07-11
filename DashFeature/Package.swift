@@ -19,7 +19,10 @@ let package = Package(
       dependencies: [
         .product(name: "DashPlatform", package: "DashPlatform")
       ],
-      path: "DashFeature"
+      path: "DashFeature",
+      resources: [
+        .process("Resources/Colors.xcassets")
+      ]
     ),
     .testTarget(
       name: "DashFeatureTests",

@@ -115,6 +115,10 @@
 			);
 			mainGroup = 8C81D8CB2FF94B8500F06FED;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8C81D8E92FF94CA100F06FED /* XCLocalSwiftPackageReference "DashFeature" */,
+				8C8BC89C2FF9D4400091ADE5 /* XCLocalSwiftPackageReference "DashPlatform" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8C81D8D52FF94B8500F06FED /* Products */;
 			projectDirPath = "";
@@ -369,13 +373,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		8C81D8E92FF94CA100F06FED /* XCLocalSwiftPackageReference "DashFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DashFeature;
+		};
+		8C8BC89C2FF9D4400091ADE5 /* XCLocalSwiftPackageReference "DashPlatform" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DashPlatform;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		8C4332AF2FF94E6C0059A96B /* DashFeature */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 8C81D8E92FF94CA100F06FED /* XCLocalSwiftPackageReference "DashFeature" */;
 			productName = DashFeature;
 		};
 		8C8BC89A2FF9D4D90091ADE5 /* DashPlatform */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 8C8BC89C2FF9D4400091ADE5 /* XCLocalSwiftPackageReference "DashPlatform" */;
 			productName = DashPlatform;
 		};
 /* End XCSwiftPackageProductDependency section */
