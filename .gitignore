@@ -64,3 +64,5 @@ fastlane/test_output
 # macOS
 .DS_Store
 
+# Local secrets
+DashFeature/DashFeature/Generated/Secrets.swift
