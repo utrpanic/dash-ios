@@ -118,8 +118,7 @@ public struct BusRouteStationDTO: Decodable, Equatable, Sendable {
     BusRouteStation(
       busStop: BusStop(
         id: stationId,
-        name: stationName,
-        alias: mobileNo?.value.trimmingCharacters(in: .whitespacesAndNewlines)
+        name: stationName
       ),
       sequence: stationSeq,
       isTurnPoint: turnYn == "Y",

@@ -26,3 +26,15 @@ import Testing
   #expect(!arrival.route.number.isEmpty)
   #expect(arrival.stationOrder == firstArrival.stationOrder)
 }
+
+@Test func fetchTargetStopBusArrivalsThroughFeature() async throws {
+  let stationIds = [
+    BusStop.suwonStationExit7Outer.id,
+    BusStop.suwonStationExit7Inner.id,
+    BusStop.homaesilSsangyongApartment.id,
+  ]
+
+  for stationId in stationIds {
+    _ = try await BusArrivalAPIClient.liveValue.fetchArrivals(stationId)
+  }
+}

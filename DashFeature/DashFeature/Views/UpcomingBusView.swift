@@ -19,7 +19,9 @@ struct UpcomingBusView: View {
           .foregroundStyle(r.color.textPrimary)
 
         VStack(alignment: .leading, spacing: 6) {
-          Label(upcomingBus.busStop.alias ?? upcomingBus.busStop.name, systemImage: "mappin.circle")
+          if let alias = upcomingBus.busStop.alias {
+            Label(alias, systemImage: "mappin.circle")
+          }
           Label(arrivalTime.formatted(date: .omitted, time: .shortened), systemImage: "clock")
         }
         .font(.system(size: 16, weight: .medium))

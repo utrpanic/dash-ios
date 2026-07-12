@@ -6,7 +6,8 @@ public struct BusStop: Equatable, Hashable, Identifiable, Sendable {
   public init(id: Int, name: String, alias: String? = nil) {
     self.id = id
     self.name = name
-    self.alias = alias
+    let alias = alias?.trimmingCharacters(in: .whitespacesAndNewlines)
+    self.alias = alias?.isEmpty == false ? alias : nil
   }
 }
 
@@ -24,6 +25,6 @@ public extension BusStop {
   static let homaesilSsangyongApartment = BusStop(
     id: 201000096,
     name: "호매실쌍용아파트",
-    alias: "02028"
+    alias: nil
   )
 }
