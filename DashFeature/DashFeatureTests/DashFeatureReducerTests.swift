@@ -54,3 +54,38 @@ import Testing
     $0.upcomingBusesErrorMessage = nil
   }
 }
+
+@MainActor
+@Test func reducerSelectsNextTargetStop() async {
+  let store = TestStore(initialState: DashFeature.State()) {
+    DashFeature()
+  } withDependencies: {
+    $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
+  }
+
+  await store.send(.nextTargetStopButtonTapped) {
+    $0.selectedTabID = "homaesil-ssangyong-apartment"
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = []
+    $0.upcomingBusesErrorMessage = nil
+  }
+
+  await store.send(.nextTargetStopButtonTapped) {
+    $0.selectedTabID = "suwon-station"
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = []
+    $0.upcomingBusesErrorMessage = nil
+  }
+}

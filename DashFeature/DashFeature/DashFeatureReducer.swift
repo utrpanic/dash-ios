@@ -38,6 +38,7 @@ public struct DashFeature {
     case busRouteSearchResponse(BusRouteSearchResponse)
     case loadUpcomingBuses
     case loadUpcomingBusesResponse(UpcomingBusesResponse)
+    case nextTargetStopButtonTapped
     case tabSelected(TargetStopTab.ID)
   }
 
@@ -116,6 +117,16 @@ public struct DashFeature {
         state.isLoadingUpcomingBuses = false
         state.upcomingBusesErrorMessage = message
         return .none
+
+      case .nextTargetStopButtonTapped:
+        guard !state.tabs.isEmpty else {
+          return .none
+        }
+
+        let selectedIndex = state.tabs.firstIndex { $0.id == state.selectedTabID } ?? -1
+        let nextIndex = state.tabs.index(after: selectedIndex) % state.tabs.count
+        state.selectedTabID = state.tabs[nextIndex].id
+        return .send(.loadUpcomingBuses)
 
       case let .tabSelected(tabID):
         state.selectedTabID = tabID

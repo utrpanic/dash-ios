@@ -54,21 +54,16 @@ struct DashboardHeaderView: View {
 
   var body: some View {
     VStack(spacing: 16) {
-      HStack {
-        targetStopMenu
-        Spacer()
+      HStack(spacing: 16) {
+        targetStopButton
+        Spacer(minLength: 16)
         Button {
           store.send(.addButtonTapped)
         } label: {
           Image(systemName: "plus")
-            .font(.system(size: 24, weight: .light))
-            .foregroundStyle(r.color.brandMint)
+            .font(.system(size: 27, weight: .light))
+            .foregroundStyle(r.color.textSecondary)
             .frame(width: 44, height: 44)
-            .background {
-              Circle()
-                .fill(r.color.surface)
-                .shadow(color: r.color.shadow, radius: 12, y: 5)
-            }
         }
         .buttonStyle(.plain)
       }
@@ -77,44 +72,48 @@ struct DashboardHeaderView: View {
     }
   }
 
-  private var targetStopMenu: some View {
-    Menu {
-      ForEach(store.tabs) { tab in
-        Button(tab.title) {
-          store.send(.tabSelected(tab.id))
-        }
-      }
+  private var targetStopButton: some View {
+    Button {
+      store.send(.nextTargetStopButtonTapped)
     } label: {
-      HStack(spacing: 14) {
+      HStack(spacing: 12) {
         Image(systemName: "location.circle.fill")
           .symbolRenderingMode(.palette)
           .font(.system(size: 24, weight: .semibold))
           .foregroundStyle(.white, r.color.brandMint)
-          .frame(width: 24, height: 24)
-        Text(selectedTabTitle)
-          .font(.system(size: 20, weight: .bold))
-          .foregroundStyle(r.color.textPrimary)
-        Image(systemName: "chevron.down")
-          .font(.system(size: 17, weight: .semibold))
-          .foregroundStyle(r.color.textSecondary)
+          .frame(width: 20, height: 20)
+        ZStack(alignment: .leading) {
+          targetStopTitleLabel
+            .id(store.selectedTabID)
+            .transition(.opacity)
+        }
+        .clipped()
+        .animation(targetStopSwitchAnimation, value: store.selectedTabID)
       }
-      .padding(.leading, 16)
-      .padding(.trailing, 16)
-      .frame(height: 44)
-      .background {
-        Capsule()
-          .fill(r.color.surface)
-          .overlay {
-            Capsule()
-              .stroke(r.color.textSecondary.opacity(0.16), lineWidth: 1)
-          }
-          .shadow(color: r.color.shadow, radius: 12, y: 5)
-      }
+      .frame(minHeight: 44, alignment: .leading)
+    }
+    .buttonStyle(.plain)
+  }
+
+  private var targetStopTitleLabel: some View {
+    HStack(spacing: 6) {
+      Text(selectedTabTitle)
+        .font(.system(size: 24, weight: .medium))
+        .foregroundStyle(r.color.textPrimary)
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
+      Image(systemName: "chevron.right")
+        .font(.system(size: 15, weight: .medium))
+        .foregroundStyle(r.color.textSecondary)
     }
   }
 
   private var selectedTabTitle: String {
     store.tabs.first { $0.id == store.selectedTabID }?.title ?? ""
+  }
+
+  private var targetStopSwitchAnimation: Animation {
+    .easeInOut(duration: 0.2)
   }
 }
 
