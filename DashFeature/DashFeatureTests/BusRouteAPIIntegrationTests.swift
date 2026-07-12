@@ -39,6 +39,49 @@ import Testing
   #expect(firstPoint.y > 0)
 }
 
+@Test func fetchKnownSuwonRouteConstantsThroughFeature() async throws {
+  let routes: [BusRoute] = [
+    .gyeonggi_9,
+    .gyeonggi_9_1,
+    .gyeonggi_13,
+    .gyeonggi_13_1,
+    .gyeonggi_13_4,
+    .gyeonggi_13_5,
+    .gyeonggi_15_1,
+  ]
+
+  for route in routes {
+    let routeInfo = try await BusRouteAPIClient.liveValue.fetchRouteInfo(route.id)
+
+    #expect(routeInfo.route == route)
+    #expect(routeInfo.regionName.contains("수원"))
+  }
+}
+
+@Test func fetchKnownSuwonStationConstantsThroughFeature() async throws {
+  let expectedStations: [(route: BusRoute, busStop: BusStop, sequence: Int)] = [
+    (.gyeonggi_9, .homaesilSsangyongApartment, 2),
+    (.gyeonggi_9_1, .homaesilSsangyongApartment, 10),
+    (.gyeonggi_13, .suwonStationExit7Outer, 26),
+    (.gyeonggi_13_1, .suwonStationExit7Inner, 54),
+    (.gyeonggi_13_4, .suwonStationExit7Outer, 33),
+    (.gyeonggi_13_5, .suwonStationExit7Inner, 35),
+    (.gyeonggi_15_1, .suwonStationExit7Outer, 145),
+    (.gyeonggi_13, .homaesilSsangyongApartment, 46),
+  ]
+
+  for expectedStation in expectedStations {
+    let stations = try await BusRouteAPIClient.liveValue.fetchRouteStations(expectedStation.route.id)
+    let station = try #require(
+      stations.first { $0.busStop.id == expectedStation.busStop.id }
+    )
+
+    #expect(station.busStop.id == expectedStation.busStop.id)
+    #expect(station.busStop.name == expectedStation.busStop.name)
+    #expect(station.sequence == expectedStation.sequence)
+  }
+}
+
 @MainActor
 @Test func reducerStoresSearchedBusRoutes() async {
   let store = TestStore(initialState: DashFeature.State()) {

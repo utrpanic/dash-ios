@@ -17,12 +17,28 @@ public struct DashboardView: View {
           .padding(.horizontal, 16)
           .padding(.top, 16)
         ScrollView {
-          TargetStopView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
-            .padding(.bottom, 16)
+          if store.isLoadingUpcomingBuses {
+            ProgressView()
+              .frame(maxWidth: .infinity)
+              .padding(.top, 32)
+          } else if let errorMessage = store.upcomingBusesErrorMessage {
+            Text(errorMessage)
+              .font(.system(size: 15, weight: .medium))
+              .foregroundStyle(r.color.textSecondary)
+              .frame(maxWidth: .infinity)
+              .padding(.horizontal, 16)
+              .padding(.top, 32)
+          } else {
+            TargetStopView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
+              .padding(.horizontal, 16)
+              .padding(.top, 16)
+              .padding(.bottom, 16)
+          }
         }
       }
+    }
+    .task {
+      await store.send(.loadUpcomingBuses).finish()
     }
   }
 }
