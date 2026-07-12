@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "29F7DFE1-1B0D-49E7-956A-C4466049CCA8",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DashFeature",
+        "identifier" : "DashFeatureTests",
+        "name" : "DashFeatureTests"
+      }
+    }
+  ],
+  "version" : 1
+}
