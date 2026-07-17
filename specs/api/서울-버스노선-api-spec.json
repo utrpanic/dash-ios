@@ -1,0 +1,695 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "서울특별시 버스 노선의 검색, 기본정보, 경로와 경유 정류소를 조회하는 서비스.",
+    "version": "1.0.0-project-generated",
+    "title": "서울특별시_노선정보조회 서비스 (프로젝트 생성 명세)",
+    "x-notice": "공식 Swagger가 없는 공공데이터포털 상세 표를 프로젝트에서 Swagger 2.0 형태로 변환한 비공식 명세입니다.",
+    "x-source": "https://www.data.go.kr/data/15000193/openapi.do"
+  },
+  "host": "ws.bus.go.kr",
+  "basePath": "/api/rest/busRouteInfo",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "paths": {
+    "/getStaionByRoute": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "성공",
+            "schema": {
+              "$ref": "#/definitions/getStaionsByRouteList_response"
+            }
+          },
+          "default": {
+            "description": "API 오류. msgHeader의 결과 코드와 메시지를 확인한다."
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선별 경유 정류소 조회 서비스",
+        "description": "노선별 경유 정류소를 조회한다.",
+        "operationId": "getStaionsByRouteList",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "serviceKey",
+            "description": "공공데이터포털에서 발급받은 인증키",
+            "type": "string",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "busRouteId",
+            "description": "노선ID",
+            "type": "string",
+            "required": true,
+            "in": "query",
+            "maxLength": 9
+          }
+        ],
+        "x-source-url": "http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute"
+      }
+    },
+    "/getRouteInfo": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "성공",
+            "schema": {
+              "$ref": "#/definitions/getRouteInfoItem_response"
+            }
+          },
+          "default": {
+            "description": "API 오류. msgHeader의 결과 코드와 메시지를 확인한다."
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선 기본정보 조회",
+        "description": "노선 ID에 해당하는 노선 기본정보를 조회한다.",
+        "operationId": "getRouteInfoItem",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "serviceKey",
+            "description": "공공데이터포털에서 발급받은 인증키",
+            "type": "string",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "busRouteId",
+            "description": "노선ID",
+            "type": "string",
+            "required": true,
+            "in": "query",
+            "maxLength": 9
+          }
+        ],
+        "x-source-url": "http://ws.bus.go.kr/api/rest/busRouteInfo/getRouteInfo"
+      }
+    },
+    "/getRoutePath": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "성공",
+            "schema": {
+              "$ref": "#/definitions/getRoutePathList_response"
+            }
+          },
+          "default": {
+            "description": "API 오류. msgHeader의 결과 코드와 메시지를 확인한다."
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선의 지도상 경로를 리턴한다.",
+        "description": "노선 ID에 해당하는 노선 경로 좌표를 조회한다.",
+        "operationId": "getRoutePathList",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "serviceKey",
+            "description": "공공데이터포털에서 발급받은 인증키",
+            "type": "string",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "busRouteId",
+            "description": "노선ID",
+            "type": "string",
+            "required": true,
+            "in": "query",
+            "maxLength": 9
+          }
+        ],
+        "x-source-url": "http://ws.bus.go.kr/api/rest/busRouteInfo/getRoutePath"
+      }
+    },
+    "/getBusRouteList": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "성공",
+            "schema": {
+              "$ref": "#/definitions/getBusRouteList_response"
+            }
+          },
+          "default": {
+            "description": "API 오류. msgHeader의 결과 코드와 메시지를 확인한다."
+          }
+        },
+        "tags": [
+          "API 목록"
+        ],
+        "summary": "노선번호에 해당하는 노선 목록 조회",
+        "description": "노선번호에 해당하는 노선 목록을 조회한다.",
+        "operationId": "getBusRouteList",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "serviceKey",
+            "description": "공공데이터포털에서 발급받은 인증키",
+            "type": "string",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "strSrch",
+            "description": "검색할 노선번호",
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "x-sample": "3"
+          }
+        ],
+        "x-source-url": "http://ws.bus.go.kr/api/rest/busRouteInfo/getBusRouteList"
+      }
+    }
+  },
+  "definitions": {
+    "getStaionsByRouteList_item": {
+      "type": "object",
+      "properties": {
+        "busRouteId": {
+          "type": "string",
+          "description": "노선ID",
+          "maxLength": 9
+        },
+        "busRouteNm": {
+          "type": "string",
+          "description": "노선명",
+          "maxLength": 30
+        },
+        "seq": {
+          "type": "string",
+          "description": "순번",
+          "maxLength": 3
+        },
+        "section": {
+          "type": "string",
+          "description": "구간ID",
+          "maxLength": 10
+        },
+        "station": {
+          "type": "string",
+          "description": "정류소 고유 ID",
+          "maxLength": 9
+        },
+        "stationNm": {
+          "type": "string",
+          "description": "정류소명",
+          "maxLength": 60
+        },
+        "gpsX": {
+          "type": "string",
+          "description": "좌표X (WGS84)",
+          "maxLength": 10
+        },
+        "gpsY": {
+          "type": "string",
+          "description": "좌표Y (WGS84)",
+          "maxLength": 10
+        },
+        "direction": {
+          "type": "string",
+          "description": "진행방향",
+          "maxLength": 60
+        },
+        "stationNo": {
+          "type": "string",
+          "description": "정류소 번호",
+          "maxLength": 5
+        },
+        "routeType": {
+          "type": "string",
+          "description": "노선유형",
+          "maxLength": 1,
+          "example": "(3:간선, 4:지선, 5:순환, 6:광역)"
+        },
+        "beginTm": {
+          "type": "string",
+          "description": "첫차시간",
+          "maxLength": 14
+        },
+        "lastTm": {
+          "type": "string",
+          "description": "막차시간",
+          "maxLength": 14
+        },
+        "posX": {
+          "type": "string",
+          "description": "좌표X (GRS80)",
+          "maxLength": 10
+        },
+        "posY": {
+          "type": "string",
+          "description": "좌표Y (GRS80)",
+          "maxLength": 10
+        },
+        "arsId": {
+          "type": "string",
+          "description": "정류소 번호",
+          "maxLength": 5
+        },
+        "transYn": {
+          "type": "string",
+          "description": "transYn",
+          "maxLength": 1,
+          "example": "(Y:회차, N:회차지아님)"
+        },
+        "trnstnid": {
+          "type": "string",
+          "description": "회차지 ID",
+          "maxLength": 9
+        },
+        "sectSpd": {
+          "type": "string",
+          "description": "구간속도",
+          "maxLength": 3
+        },
+        "fullSectDist": {
+          "type": "string",
+          "description": "구간거리",
+          "maxLength": 5
+        }
+      },
+      "required": [
+        "busRouteId",
+        "busRouteNm",
+        "seq",
+        "section",
+        "station",
+        "stationNm",
+        "gpsX",
+        "gpsY",
+        "direction",
+        "stationNo",
+        "routeType",
+        "beginTm",
+        "lastTm"
+      ]
+    },
+    "getStaionsByRouteList_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "object",
+          "description": "공통 메시지 헤더",
+          "additionalProperties": true
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답 메시지 헤더",
+          "properties": {
+            "headerCd": {
+              "type": "string",
+              "description": "결과 코드"
+            },
+            "headerMsg": {
+              "type": "string",
+              "description": "결과 메시지"
+            },
+            "itemCount": {
+              "type": "integer",
+              "description": "항목 개수"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답 메시지 본문",
+          "properties": {
+            "itemList": {
+              "type": "array",
+              "description": "조회 결과 목록",
+              "items": {
+                "$ref": "#/definitions/getStaionsByRouteList_item"
+              },
+              "xml": {
+                "name": "itemList",
+                "wrapped": false
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "ServiceResult"
+      }
+    },
+    "getRouteInfoItem_item": {
+      "type": "object",
+      "properties": {
+        "busRouteNm": {
+          "type": "string",
+          "description": "노선명",
+          "maxLength": 30
+        },
+        "length": {
+          "type": "string",
+          "description": "노선길이",
+          "maxLength": 3
+        },
+        "routeType": {
+          "type": "string",
+          "description": "노선유형",
+          "maxLength": 1,
+          "example": "(3:간선, 4:지선, 5:순환, 6:광역)"
+        },
+        "stStationNm": {
+          "type": "string",
+          "description": "기점",
+          "maxLength": 60
+        },
+        "edStationNm": {
+          "type": "string",
+          "description": "종점",
+          "maxLength": 60
+        },
+        "term": {
+          "type": "string",
+          "description": "배차간격 (분)",
+          "maxLength": 3
+        },
+        "lastBusYn": {
+          "type": "string",
+          "description": "막차운행여부",
+          "maxLength": 1,
+          "example": "(Y, N)"
+        },
+        "lastBusTm": {
+          "type": "string",
+          "description": "금일막차시간",
+          "maxLength": 14
+        },
+        "firstBusTm": {
+          "type": "string",
+          "description": "금일첫차시간",
+          "maxLength": 14
+        },
+        "lastLowTm": {
+          "type": "string",
+          "description": "금일저상첫차시간",
+          "maxLength": 14
+        },
+        "firstLowTm": {
+          "type": "string",
+          "description": "금일저상막차시간",
+          "maxLength": 14
+        },
+        "busRouteId": {
+          "type": "string",
+          "description": "노선ID",
+          "maxLength": 9
+        },
+        "corpNm": {
+          "type": "string",
+          "description": "운수사명",
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "busRouteNm",
+        "length",
+        "busRouteId"
+      ]
+    },
+    "getRouteInfoItem_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "object",
+          "description": "공통 메시지 헤더",
+          "additionalProperties": true
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답 메시지 헤더",
+          "properties": {
+            "headerCd": {
+              "type": "string",
+              "description": "결과 코드"
+            },
+            "headerMsg": {
+              "type": "string",
+              "description": "결과 메시지"
+            },
+            "itemCount": {
+              "type": "integer",
+              "description": "항목 개수"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답 메시지 본문",
+          "properties": {
+            "itemList": {
+              "type": "array",
+              "description": "조회 결과 목록",
+              "items": {
+                "$ref": "#/definitions/getRouteInfoItem_item"
+              },
+              "xml": {
+                "name": "itemList",
+                "wrapped": false
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "ServiceResult"
+      }
+    },
+    "getRoutePathList_item": {
+      "type": "object",
+      "properties": {
+        "no": {
+          "type": "string",
+          "description": "순서",
+          "maxLength": 3
+        },
+        "gpsX": {
+          "type": "string",
+          "description": "좌표X (WGS84)",
+          "maxLength": 12
+        },
+        "gpsY": {
+          "type": "string",
+          "description": "좌표Y (WGS84)",
+          "maxLength": 12
+        },
+        "posX": {
+          "type": "string",
+          "description": "좌표X (GRS80)",
+          "maxLength": 12
+        },
+        "posY": {
+          "type": "string",
+          "description": "좌표Y (GRS80)",
+          "maxLength": 12
+        }
+      },
+      "required": [
+        "no",
+        "gpsX",
+        "gpsY",
+        "posX",
+        "posY"
+      ]
+    },
+    "getRoutePathList_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "object",
+          "description": "공통 메시지 헤더",
+          "additionalProperties": true
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답 메시지 헤더",
+          "properties": {
+            "headerCd": {
+              "type": "string",
+              "description": "결과 코드"
+            },
+            "headerMsg": {
+              "type": "string",
+              "description": "결과 메시지"
+            },
+            "itemCount": {
+              "type": "integer",
+              "description": "항목 개수"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답 메시지 본문",
+          "properties": {
+            "itemList": {
+              "type": "array",
+              "description": "조회 결과 목록",
+              "items": {
+                "$ref": "#/definitions/getRoutePathList_item"
+              },
+              "xml": {
+                "name": "itemList",
+                "wrapped": false
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "ServiceResult"
+      }
+    },
+    "getBusRouteList_item": {
+      "type": "object",
+      "properties": {
+        "busRouteId": {
+          "type": "string",
+          "description": "노선 ID",
+          "maxLength": 9
+        },
+        "busRouteNm": {
+          "type": "string",
+          "description": "노선명",
+          "maxLength": 30
+        },
+        "length": {
+          "type": "string",
+          "description": "노선 길이 (Km)",
+          "maxLength": 3
+        },
+        "routeType": {
+          "type": "string",
+          "description": "노선 유형",
+          "maxLength": 1,
+          "example": "(1:공항, 2:마을, 3:간선, 4:지선, 5:순환, 6:광역, 7:인천, 8:경기, 9:폐지, 0:공용)"
+        },
+        "stStationNm": {
+          "type": "string",
+          "description": "기점",
+          "maxLength": 60
+        },
+        "edStationNm": {
+          "type": "string",
+          "description": "종점",
+          "maxLength": 60
+        },
+        "term": {
+          "type": "string",
+          "description": "배차간격 (분)",
+          "maxLength": 3
+        },
+        "lastBusYn": {
+          "type": "string",
+          "description": "막차운행여부",
+          "maxLength": 1,
+          "example": "(Y, N)"
+        },
+        "firstBusTm": {
+          "type": "string",
+          "description": "금일막차시간",
+          "maxLength": 14
+        },
+        "lastBusTm": {
+          "type": "string",
+          "description": "금일막차시간",
+          "maxLength": 14
+        },
+        "firstLowTm": {
+          "type": "string",
+          "description": "금일저상첫차시간",
+          "maxLength": 14
+        },
+        "lastLowTm": {
+          "type": "string",
+          "description": "금일저상막차시간",
+          "maxLength": 14
+        },
+        "corpNm": {
+          "type": "string",
+          "description": "운수사명",
+          "maxLength": 60
+        }
+      }
+    },
+    "getBusRouteList_response": {
+      "type": "object",
+      "properties": {
+        "comMsgHeader": {
+          "type": "object",
+          "description": "공통 메시지 헤더",
+          "additionalProperties": true
+        },
+        "msgHeader": {
+          "type": "object",
+          "description": "응답 메시지 헤더",
+          "properties": {
+            "headerCd": {
+              "type": "string",
+              "description": "결과 코드"
+            },
+            "headerMsg": {
+              "type": "string",
+              "description": "결과 메시지"
+            },
+            "itemCount": {
+              "type": "integer",
+              "description": "항목 개수"
+            }
+          }
+        },
+        "msgBody": {
+          "type": "object",
+          "description": "응답 메시지 본문",
+          "properties": {
+            "itemList": {
+              "type": "array",
+              "description": "조회 결과 목록",
+              "items": {
+                "$ref": "#/definitions/getBusRouteList_item"
+              },
+              "xml": {
+                "name": "itemList",
+                "wrapped": false
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "ServiceResult"
+      }
+    }
+  }
+}
