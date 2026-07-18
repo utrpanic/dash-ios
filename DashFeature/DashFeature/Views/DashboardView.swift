@@ -51,7 +51,7 @@ public struct DashboardView: View {
         Spacer()
         HStack {
           Spacer()
-          refreshButton
+          floatingButtons
         }
       }
       .padding(.trailing, 32)
@@ -61,6 +61,35 @@ public struct DashboardView: View {
     .task {
       store.send(.task)
     }
+  }
+
+  private var floatingButtons: some View {
+    VStack(spacing: 16) {
+      locationButton
+      refreshButton
+        .overlay(alignment: .bottom) {
+          elapsedTimeLabel
+            .offset(y: 20)
+            .allowsHitTesting(false)
+        }
+    }
+  }
+
+  private var locationButton: some View {
+    Button {
+      store.send(.locationButtonTapped)
+    } label: {
+      Image(systemName: "location.fill")
+        .font(.system(size: 18, weight: .semibold))
+        .foregroundStyle(r.color.brandMint)
+        .frame(width: 64, height: 64)
+        .background(r.color.surface, in: Circle())
+        .shadow(color: .black.opacity(0.14), radius: 7, y: 2)
+    }
+    .buttonStyle(.plain)
+    .disabled(isLocationDisabled)
+    .opacity(isLocationDisabled ? 0.55 : 1)
+    .accessibilityLabel("현재 위치")
   }
 
   private var refreshButton: some View {
@@ -80,8 +109,60 @@ public struct DashboardView: View {
     .accessibilityLabel("새로고침")
   }
 
+  @ViewBuilder
+  private var elapsedTimeLabel: some View {
+    if !store.isLoadingUpcomingBuses, let lastUpdatedAt = store.lastUpdatedAt {
+      TimelineView(.periodic(from: .now, by: 1)) { context in
+        if context.date.timeIntervalSince(lastUpdatedAt) >= 10 {
+          Text(elapsedTimeText(from: lastUpdatedAt, to: context.date))
+            .font(.system(size: 12, weight: .regular))
+            .monospacedDigit()
+            .foregroundStyle(r.color.textSecondary.opacity(0.6))
+            .frame(width: 64)
+            .accessibilityLabel(
+              elapsedTimeAccessibilityLabel(from: lastUpdatedAt, to: context.date)
+            )
+        }
+      }
+    }
+  }
+
+  private var isLocationDisabled: Bool {
+    store.isRequestingUserLocation
+      || store.isLoadingUpcomingBuses
+      || store.boardingPoints.isEmpty
+      || store.boardingPointSelection == .locationPermissionDenied
+  }
+
   private var isRefreshDisabled: Bool {
     store.isLoadingUpcomingBuses || store.selectedBoardingPointID == nil
+  }
+
+  private func elapsedTimeText(from startDate: Date, to endDate: Date) -> String {
+    let elapsedSeconds = max(Int(endDate.timeIntervalSince(startDate)), 0)
+    if elapsedSeconds < 60 {
+      return "\(elapsedSeconds)s ago"
+    }
+    if elapsedSeconds < 60 * 60 {
+      return "\(elapsedSeconds / 60)m ago"
+    }
+    return "\(elapsedSeconds / 60 / 60)h ago"
+  }
+
+  private func elapsedTimeAccessibilityLabel(from startDate: Date, to endDate: Date) -> String {
+    let elapsedSeconds = max(Int(endDate.timeIntervalSince(startDate)), 0)
+    if elapsedSeconds < 60 {
+      let unit = elapsedSeconds == 1 ? "second" : "seconds"
+      return "Updated \(elapsedSeconds) \(unit) ago"
+    }
+    if elapsedSeconds < 60 * 60 {
+      let elapsedMinutes = elapsedSeconds / 60
+      let unit = elapsedMinutes == 1 ? "minute" : "minutes"
+      return "Updated \(elapsedMinutes) \(unit) ago"
+    }
+    let elapsedHours = elapsedSeconds / 60 / 60
+    let unit = elapsedHours == 1 ? "hour" : "hours"
+    return "Updated \(elapsedHours) \(unit) ago"
   }
 
   private var boardingPointSelectionMessage: String? {
@@ -113,7 +194,7 @@ struct DashboardHeaderView: View {
           store.send(.editButtonTapped)
         } label: {
           Image(systemName: "square.and.pencil")
-            .font(.system(size: 20, weight: .regular))
+            .font(.system(size: 24, weight: .light))
             .foregroundStyle(r.color.textSecondary)
             .frame(width: 44, height: 44)
             .offset(y: -2)
@@ -186,7 +267,7 @@ struct DashboardHeaderView: View {
 
 #Preview("Light") {
   DashboardView(
-    store: Store(initialState: DashFeature.State()) {
+    store: Store(initialState: .preview) {
       DashFeature()
     }
   )
@@ -195,9 +276,20 @@ struct DashboardHeaderView: View {
 
 #Preview("Dark") {
   DashboardView(
-    store: Store(initialState: DashFeature.State()) {
+    store: Store(initialState: .preview) {
       DashFeature()
     }
   )
   .preferredColorScheme(.dark)
+}
+
+private extension DashFeature.State {
+  static var preview: Self {
+    var state = Self()
+    state.boardingPointSelection = .selected(BoardingPoint.suwonStation.id)
+    state.hasRequestedInitialLocation = true
+    state.upcomingBuses = .mock
+    state.lastUpdatedAt = .now.addingTimeInterval(-12)
+    return state
+  }
 }

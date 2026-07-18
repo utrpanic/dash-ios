@@ -7,6 +7,7 @@ public struct DashFeature {
 
   @Dependency(\.busArrivalAPIClient) var busArrivalAPIClient
   @Dependency(\.busRouteAPIClient) var busRouteAPIClient
+  @Dependency(\.date.now) var now
   @Dependency(\.userLocationClient) var userLocationClient
 
   public enum BoardingPointSelection: Equatable, Hashable {
@@ -21,9 +22,11 @@ public struct DashFeature {
     public var boardingPoints: [BoardingPoint]
     public var boardingPointSelection: BoardingPointSelection
     public var hasRequestedInitialLocation: Bool
+    public var isRequestingUserLocation: Bool
     public var upcomingBuses: [UpcomingBus]
     public var isLoadingUpcomingBuses: Bool
     public var upcomingBusesErrorMessage: String?
+    public var lastUpdatedAt: Date?
     public var busRouteSearchKeyword: String
     public var busRouteSearchResults: [BusRoute]
     public var isSearchingBusRoutes: Bool
@@ -33,9 +36,11 @@ public struct DashFeature {
       self.boardingPoints = .mock
       self.boardingPointSelection = .locating
       self.hasRequestedInitialLocation = false
+      self.isRequestingUserLocation = false
       self.upcomingBuses = []
       self.isLoadingUpcomingBuses = false
       self.upcomingBusesErrorMessage = nil
+      self.lastUpdatedAt = nil
       self.busRouteSearchKeyword = ""
       self.busRouteSearchResults = []
       self.isSearchingBusRoutes = false
@@ -56,6 +61,7 @@ public struct DashFeature {
     case busRouteSearchResponse(BusRouteSearchResponse)
     case loadUpcomingBuses
     case loadUpcomingBusesResponse(UpcomingBusesResponse)
+    case locationButtonTapped
     case nextBoardingPointButtonTapped
     case refreshButtonTapped
     case boardingPointSelected(BoardingPoint.ID)
@@ -145,12 +151,26 @@ public struct DashFeature {
         state.isLoadingUpcomingBuses = false
         state.upcomingBuses = upcomingBuses
         state.upcomingBusesErrorMessage = nil
+        state.lastUpdatedAt = now
         return .none
 
       case let .loadUpcomingBusesResponse(.failure(message)):
         state.isLoadingUpcomingBuses = false
         state.upcomingBusesErrorMessage = message
         return .none
+
+      case .locationButtonTapped:
+        state.isRequestingUserLocation = true
+        let requestLocation = userLocationClient.requestLocation
+        return .run { send in
+          do {
+            await send(.userLocationResponse(.success(try await requestLocation())))
+          } catch UserLocationError.authorizationDenied {
+            await send(.userLocationResponse(.authorizationDenied))
+          } catch {
+            await send(.userLocationResponse(.unavailable))
+          }
+        }
 
       case .nextBoardingPointButtonTapped:
         guard !state.boardingPoints.isEmpty else {
@@ -164,12 +184,16 @@ public struct DashFeature {
         let nextIndex = state.boardingPoints.index(after: selectedIndex)
           % state.boardingPoints.count
         state.boardingPointSelection = .selected(state.boardingPoints[nextIndex].id)
+        state.lastUpdatedAt = nil
         return .send(.loadUpcomingBuses)
 
       case .refreshButtonTapped:
         return .send(.loadUpcomingBuses)
 
       case let .boardingPointSelected(boardingPointID):
+        if boardingPointID != state.selectedBoardingPointID {
+          state.lastUpdatedAt = nil
+        }
         state.boardingPointSelection = .selected(boardingPointID)
         return .send(.loadUpcomingBuses)
 
@@ -179,6 +203,7 @@ public struct DashFeature {
         }
 
         state.hasRequestedInitialLocation = true
+        state.isRequestingUserLocation = true
         state.isLoadingUpcomingBuses = true
         let requestLocation = userLocationClient.requestLocation
         return .run { send in
@@ -192,6 +217,7 @@ public struct DashFeature {
         }
 
       case let .userLocationResponse(.success(location)):
+        state.isRequestingUserLocation = false
         guard let nearestBoardingPointID = Self.nearestBoardingPointID(
           to: location,
           in: state.boardingPoints
@@ -200,17 +226,26 @@ public struct DashFeature {
           state.isLoadingUpcomingBuses = false
           return .none
         }
+        if nearestBoardingPointID != state.selectedBoardingPointID {
+          state.lastUpdatedAt = nil
+        }
         state.boardingPointSelection = .selected(nearestBoardingPointID)
         return .send(.loadUpcomingBuses)
 
       case .userLocationResponse(.authorizationDenied):
-        state.boardingPointSelection = .locationPermissionDenied
-        state.isLoadingUpcomingBuses = false
+        state.isRequestingUserLocation = false
+        if state.selectedBoardingPointID == nil {
+          state.boardingPointSelection = .locationPermissionDenied
+          state.isLoadingUpcomingBuses = false
+        }
         return .none
 
       case .userLocationResponse(.unavailable):
-        state.boardingPointSelection = .locationUnavailable
-        state.isLoadingUpcomingBuses = false
+        state.isRequestingUserLocation = false
+        if state.selectedBoardingPointID == nil {
+          state.boardingPointSelection = .locationUnavailable
+          state.isLoadingUpcomingBuses = false
+        }
         return .none
       }
     }

@@ -1,6 +1,9 @@
 import ComposableArchitecture
+import Foundation
 import Testing
 @testable import DashFeature
+
+private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 
 @MainActor
 @Test func reducerLoadsUpcomingBusesAfterSelectingBoardingPoint() async {
@@ -13,6 +16,7 @@ import Testing
   let store = TestStore(initialState: DashFeature.State()) {
     DashFeature()
   } withDependencies: {
+    $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { stationId in
       guard stationId == BusStop.homaesilSsangyongApartment.id else {
         return []
@@ -52,6 +56,7 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = [expectedUpcomingBus]
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 }
 
@@ -62,6 +67,7 @@ import Testing
   let store = TestStore(initialState: initialState) {
     DashFeature()
   } withDependencies: {
+    $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
   }
 
@@ -76,10 +82,12 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 
   await store.send(.nextBoardingPointButtonTapped) {
     $0.boardingPointSelection = .selected("yeongdeungpo-station")
+    $0.lastUpdatedAt = nil
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -89,10 +97,12 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 
   await store.send(.nextBoardingPointButtonTapped) {
     $0.boardingPointSelection = .selected("the-hyundai-seoul")
+    $0.lastUpdatedAt = nil
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -102,10 +112,12 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 
   await store.send(.nextBoardingPointButtonTapped) {
     $0.boardingPointSelection = .selected("suwon-station")
+    $0.lastUpdatedAt = nil
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -115,6 +127,7 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 }
 
@@ -127,22 +140,26 @@ import Testing
   let store = TestStore(initialState: DashFeature.State()) {
     DashFeature()
   } withDependencies: {
+    $0.date.now = testNow
     $0.userLocationClient.requestLocation = { location }
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
   }
 
   await store.send(.task) {
     $0.hasRequestedInitialLocation = true
+    $0.isRequestingUserLocation = true
     $0.isLoadingUpcomingBuses = true
   }
   await store.receive(.userLocationResponse(.success(location))) {
     $0.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
+    $0.isRequestingUserLocation = false
   }
   await store.receive(.loadUpcomingBuses)
   await store.receive(.loadUpcomingBusesResponse(.success([]))) {
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 }
 
@@ -167,6 +184,7 @@ import Testing
   let store = TestStore(initialState: initialState) {
     DashFeature()
   } withDependencies: {
+    $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
   }
 
@@ -179,6 +197,42 @@ import Testing
     $0.isLoadingUpcomingBuses = false
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
+  }
+}
+
+@MainActor
+@Test func reducerSelectsNearestBoardingPointFromLocationButton() async {
+  let location = UserLocation(
+    latitude: BoardingPoint.theHyundaiSeoul.centerLatitude,
+    longitude: BoardingPoint.theHyundaiSeoul.centerLongitude
+  )
+  var initialState = DashFeature.State()
+  initialState.boardingPointSelection = .selected("yeongdeungpo-station")
+  let store = TestStore(initialState: initialState) {
+    DashFeature()
+  } withDependencies: {
+    $0.date.now = testNow
+    $0.userLocationClient.requestLocation = { location }
+    $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
+  }
+
+  await store.send(.locationButtonTapped) {
+    $0.isRequestingUserLocation = true
+  }
+  await store.receive(.userLocationResponse(.success(location))) {
+    $0.boardingPointSelection = .selected("the-hyundai-seoul")
+    $0.isRequestingUserLocation = false
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = []
+    $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
   }
 }
 
@@ -194,10 +248,12 @@ import Testing
 
   await store.send(.task) {
     $0.hasRequestedInitialLocation = true
+    $0.isRequestingUserLocation = true
     $0.isLoadingUpcomingBuses = true
   }
   await store.receive(.userLocationResponse(.authorizationDenied)) {
     $0.boardingPointSelection = .locationPermissionDenied
+    $0.isRequestingUserLocation = false
     $0.isLoadingUpcomingBuses = false
   }
 }
