@@ -20,17 +20,6 @@ private let seoulSampleRoute = BusRoute.seoul_662
   #expect(!routeInfo.endStationName.isEmpty)
 }
 
-@Test func fetchSeoulBusRouteStationsThroughFeature() async throws {
-  let stations = try await SeoulBusRouteAPIClient.liveValue.fetchRouteStations(seoulSampleRoute.id)
-  let firstStation = try #require(stations.first)
-
-  #expect(firstStation.busStop.id > 0)
-  #expect(!firstStation.busStop.name.isEmpty)
-  #expect(firstStation.sequence > 0)
-  #expect(firstStation.x > 0)
-  #expect(firstStation.y > 0)
-}
-
 @Test func fetchSeoulBusRouteLineThroughFeature() async throws {
   let linePoints = try await SeoulBusRouteAPIClient.liveValue.fetchRouteLine(seoulSampleRoute.id)
   let firstPoint = try #require(linePoints.first)

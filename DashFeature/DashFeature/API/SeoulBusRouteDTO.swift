@@ -63,38 +63,6 @@ struct SeoulBusRouteInfoDTO: Equatable, Sendable {
   }
 }
 
-struct SeoulBusRouteStationDTO: Equatable, Sendable {
-  let stationId: Int
-  let stationName: String
-  let sequence: Int
-  let isTurnPoint: Bool
-  let x: Double
-  let y: Double
-
-  init(fields: [String: String]) throws {
-    let fields = SeoulBusAPIFields(values: fields)
-    stationId = try fields.requiredInt("station")
-    stationName = fields.string("stationNm")
-    sequence = try fields.requiredInt("seq")
-    isTurnPoint = fields.string("transYn") == "Y"
-    x = try fields.requiredDouble("gpsX")
-    y = try fields.requiredDouble("gpsY")
-  }
-
-  func toDomain() -> BusRouteStation {
-    BusRouteStation(
-      busStop: BusStop(
-        id: stationId,
-        name: stationName,
-        latitude: y,
-        longitude: x
-      ),
-      sequence: sequence,
-      isTurnPoint: isTurnPoint
-    )
-  }
-}
-
 struct SeoulBusRouteLineDTO: Equatable, Sendable {
   let sequence: Int
   let x: Double

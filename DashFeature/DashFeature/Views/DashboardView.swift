@@ -81,7 +81,7 @@ public struct DashboardView: View {
   }
 
   private var isRefreshDisabled: Bool {
-    store.isLoadingUpcomingBuses || store.selectedTabID == nil
+    store.isLoadingUpcomingBuses || store.selectedBoardingPointID == nil
   }
 
   private var boardingPointSelectionMessage: String? {
@@ -148,7 +148,7 @@ struct DashboardHeaderView: View {
       .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     }
     .buttonStyle(.plain)
-    .disabled(store.boardingPointSelection == .locating || store.tabs.isEmpty)
+    .disabled(store.boardingPointSelection == .locating || store.boardingPoints.isEmpty)
   }
 
   private var boardingPointTitleLabel: some View {
@@ -174,8 +174,8 @@ struct DashboardHeaderView: View {
       return "위치 권한 없음"
     case .locationUnavailable:
       return "위치 확인 불가"
-    case let .selected(tabID):
-      return store.tabs.first { $0.id == tabID }?.title ?? ""
+    case let .selected(boardingPointID):
+      return store.boardingPoints.first { $0.id == boardingPointID }?.name ?? ""
     }
   }
 

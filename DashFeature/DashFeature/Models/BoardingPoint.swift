@@ -1,21 +1,21 @@
 public struct BoardingPoint: Equatable, Hashable, Identifiable, Sendable {
   public let id: String
   public let name: String
-  public let stops: [BusStop]
+  public let routes: [BusStop: Set<BusRoute>]
 
   public var centerLatitude: Double {
-    stops.map(\.latitude).reduce(0, +) / Double(stops.count)
+    routes.keys.map(\.latitude).reduce(0, +) / Double(routes.count)
   }
 
   public var centerLongitude: Double {
-    stops.map(\.longitude).reduce(0, +) / Double(stops.count)
+    routes.keys.map(\.longitude).reduce(0, +) / Double(routes.count)
   }
 
-  public init(id: String, name: String, stops: [BusStop]) {
-    precondition(!stops.isEmpty, "BoardingPoint requires at least one bus stop.")
+  public init(id: String, name: String, routes: [BusStop: Set<BusRoute>]) {
+    precondition(!routes.isEmpty, "BoardingPoint requires at least one bus stop.")
     self.id = id
     self.name = name
-    self.stops = stops
+    self.routes = routes
   }
 }
 
@@ -23,16 +23,27 @@ public extension BoardingPoint {
   static let suwonStation = BoardingPoint(
     id: "suwon-station",
     name: "수원역",
-    stops: [
-      .suwonStationExit7Outer,
-      .suwonStationExit7Inner,
+    routes: [
+      .suwonStationExit7Outer: [
+        .gyeonggi_13,
+        .gyeonggi_13_4,
+        .gyeonggi_15_1,
+      ],
+      .suwonStationExit7Inner: [
+        .gyeonggi_13_1,
+        .gyeonggi_13_5,
+      ],
     ]
   )
   static let homaesilSsangyongApartment = BoardingPoint(
     id: "homaesil-ssangyong-apartment",
     name: "호매실쌍용아파트",
-    stops: [
-      .homaesilSsangyongApartment,
+    routes: [
+      .homaesilSsangyongApartment: [
+        .gyeonggi_9,
+        .gyeonggi_9_1,
+        .gyeonggi_13,
+      ],
     ]
   )
 }

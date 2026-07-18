@@ -13,12 +13,12 @@ public struct DashFeature {
     case locating
     case locationPermissionDenied
     case locationUnavailable
-    case selected(BoardingPointTab.ID)
+    case selected(BoardingPoint.ID)
   }
 
   @ObservableState
   public struct State: Equatable {
-    public var tabs: [BoardingPointTab]
+    public var boardingPoints: [BoardingPoint]
     public var boardingPointSelection: BoardingPointSelection
     public var hasRequestedInitialLocation: Bool
     public var upcomingBuses: [UpcomingBus]
@@ -30,7 +30,7 @@ public struct DashFeature {
     public var busRouteSearchErrorMessage: String?
 
     public init() {
-      self.tabs = .mock
+      self.boardingPoints = .mock
       self.boardingPointSelection = .locating
       self.hasRequestedInitialLocation = false
       self.upcomingBuses = []
@@ -42,11 +42,11 @@ public struct DashFeature {
       self.busRouteSearchErrorMessage = nil
     }
 
-    public var selectedTabID: BoardingPointTab.ID? {
-      guard case let .selected(tabID) = boardingPointSelection else {
+    public var selectedBoardingPointID: BoardingPoint.ID? {
+      guard case let .selected(boardingPointID) = boardingPointSelection else {
         return nil
       }
-      return tabID
+      return boardingPointID
     }
   }
 
@@ -58,7 +58,7 @@ public struct DashFeature {
     case loadUpcomingBusesResponse(UpcomingBusesResponse)
     case nextBoardingPointButtonTapped
     case refreshButtonTapped
-    case tabSelected(BoardingPointTab.ID)
+    case boardingPointSelected(BoardingPoint.ID)
     case task
     case userLocationResponse(UserLocationResponse)
   }
@@ -115,8 +115,10 @@ public struct DashFeature {
         return .none
 
       case .loadUpcomingBuses:
-        guard let selectedTabID = state.selectedTabID,
-              let tab = state.tabs.first(where: { $0.id == selectedTabID })
+        guard let selectedBoardingPointID = state.selectedBoardingPointID,
+              let boardingPoint = state.boardingPoints.first(
+                where: { $0.id == selectedBoardingPointID }
+              )
         else {
           state.isLoadingUpcomingBuses = false
           return .none
@@ -129,8 +131,7 @@ public struct DashFeature {
         return .run { send in
           do {
             let upcomingBuses = try await Self.fetchUpcomingBuses(
-              boardingPoints: tab.boardingPoints,
-              busRoutes: tab.busRoutes,
+              boardingPoint: boardingPoint,
               fetchArrivals: fetchArrivals
             )
             await send(.loadUpcomingBusesResponse(.success(upcomingBuses)))
@@ -152,23 +153,24 @@ public struct DashFeature {
         return .none
 
       case .nextBoardingPointButtonTapped:
-        guard !state.tabs.isEmpty else {
+        guard !state.boardingPoints.isEmpty else {
           return .none
         }
 
-        let selectedIndex = state.selectedTabID
-          .flatMap { selectedTabID in
-            state.tabs.firstIndex { $0.id == selectedTabID }
+        let selectedIndex = state.selectedBoardingPointID
+          .flatMap { selectedBoardingPointID in
+            state.boardingPoints.firstIndex { $0.id == selectedBoardingPointID }
           } ?? -1
-        let nextIndex = state.tabs.index(after: selectedIndex) % state.tabs.count
-        state.boardingPointSelection = .selected(state.tabs[nextIndex].id)
+        let nextIndex = state.boardingPoints.index(after: selectedIndex)
+          % state.boardingPoints.count
+        state.boardingPointSelection = .selected(state.boardingPoints[nextIndex].id)
         return .send(.loadUpcomingBuses)
 
       case .refreshButtonTapped:
         return .send(.loadUpcomingBuses)
 
-      case let .tabSelected(tabID):
-        state.boardingPointSelection = .selected(tabID)
+      case let .boardingPointSelected(boardingPointID):
+        state.boardingPointSelection = .selected(boardingPointID)
         return .send(.loadUpcomingBuses)
 
       case .task:
@@ -190,12 +192,15 @@ public struct DashFeature {
         }
 
       case let .userLocationResponse(.success(location)):
-        guard let nearestTabID = Self.nearestTabID(to: location, in: state.tabs) else {
+        guard let nearestBoardingPointID = Self.nearestBoardingPointID(
+          to: location,
+          in: state.boardingPoints
+        ) else {
           state.boardingPointSelection = .locationUnavailable
           state.isLoadingUpcomingBuses = false
           return .none
         }
-        state.boardingPointSelection = .selected(nearestTabID)
+        state.boardingPointSelection = .selected(nearestBoardingPointID)
         return .send(.loadUpcomingBuses)
 
       case .userLocationResponse(.authorizationDenied):
@@ -213,18 +218,15 @@ public struct DashFeature {
 }
 
 private extension DashFeature {
-  static func nearestTabID(
+  static func nearestBoardingPointID(
     to location: UserLocation,
-    in tabs: [BoardingPointTab]
-  ) -> BoardingPointTab.ID? {
-    tabs.compactMap { tab -> (id: BoardingPointTab.ID, distance: Double)? in
-      guard let distance = tab.boardingPoints
-        .map({ distance(from: location, to: $0) })
-        .min()
-      else {
-        return nil
-      }
-      return (tab.id, distance)
+    in boardingPoints: [BoardingPoint]
+  ) -> BoardingPoint.ID? {
+    boardingPoints.map { boardingPoint in
+      (
+        id: boardingPoint.id,
+        distance: distance(from: location, to: boardingPoint)
+      )
     }
     .min { $0.distance < $1.distance }?
     .id
@@ -247,22 +249,19 @@ private extension DashFeature {
   }
 
   static func fetchUpcomingBuses(
-    boardingPoints: [BoardingPoint],
-    busRoutes: [BusRoute],
+    boardingPoint: BoardingPoint,
     fetchArrivals: @escaping @Sendable (_ stationId: Int) async throws -> [BusArrival]
   ) async throws -> [UpcomingBus] {
     var upcomingBuses: [UpcomingBus] = []
-    let busRouteIDs = Set(busRoutes.map(\.id))
 
-    for boardingPoint in boardingPoints {
-      for busStop in boardingPoint.stops {
-        let arrivals = try await fetchArrivals(busStop.id)
-        let matchingArrivals = arrivals.filter { busRouteIDs.contains($0.route.id) }
-        for arrival in matchingArrivals {
-          upcomingBuses.append(
-            contentsOf: arrival.upcomingBuses(boardingPoint: boardingPoint, busStop: busStop)
-          )
-        }
+    for (busStop, busRoutes) in boardingPoint.routes {
+      let busRouteIDs = Set(busRoutes.map(\.id))
+      let arrivals = try await fetchArrivals(busStop.id)
+      let matchingArrivals = arrivals.filter { busRouteIDs.contains($0.route.id) }
+      for arrival in matchingArrivals {
+        upcomingBuses.append(
+          contentsOf: arrival.upcomingBuses(boardingPoint: boardingPoint, busStop: busStop)
+        )
       }
     }
 

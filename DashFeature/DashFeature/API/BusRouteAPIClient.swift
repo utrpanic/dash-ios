@@ -4,18 +4,15 @@ import Foundation
 public struct BusRouteAPIClient: Sendable {
   public var fetchRouteInfo: @Sendable (_ routeId: Int) async throws -> BusRouteInfo
   public var fetchRouteLine: @Sendable (_ routeId: Int) async throws -> [BusRouteLinePoint]
-  public var fetchRouteStations: @Sendable (_ routeId: Int) async throws -> [BusRouteStation]
   public var searchRoutes: @Sendable (_ keyword: String) async throws -> [BusRoute]
 
   public init(
     fetchRouteInfo: @escaping @Sendable (_ routeId: Int) async throws -> BusRouteInfo,
     fetchRouteLine: @escaping @Sendable (_ routeId: Int) async throws -> [BusRouteLinePoint],
-    fetchRouteStations: @escaping @Sendable (_ routeId: Int) async throws -> [BusRouteStation],
     searchRoutes: @escaping @Sendable (_ keyword: String) async throws -> [BusRoute]
   ) {
     self.fetchRouteInfo = fetchRouteInfo
     self.fetchRouteLine = fetchRouteLine
-    self.fetchRouteStations = fetchRouteStations
     self.searchRoutes = searchRoutes
   }
 }
@@ -31,12 +28,6 @@ extension BusRouteAPIClient: DependencyKey {
     fetchRouteLine: { routeId in
       let responseDTO: BusRouteLineResponseDTO = try await Self.fetch(
         .routeLine(routeId: routeId, serviceKey: serviceKey())
-      )
-      return responseDTO.toDomain()
-    },
-    fetchRouteStations: { routeId in
-      let responseDTO: BusRouteStationResponseDTO = try await Self.fetch(
-        .routeStations(routeId: routeId, serviceKey: serviceKey())
       )
       return responseDTO.toDomain()
     },
@@ -60,7 +51,6 @@ extension BusRouteAPIClient: DependencyKey {
       )
     },
     fetchRouteLine: { _ in [] },
-    fetchRouteStations: { _ in [] },
     searchRoutes: { _ in [] }
   )
 }
@@ -84,7 +74,6 @@ private enum BusRouteAPIRequest {
   case routeInfo(routeId: Int, serviceKey: String)
   case routeLine(routeId: Int, serviceKey: String)
   case routeList(keyword: String, serviceKey: String)
-  case routeStations(routeId: Int, serviceKey: String)
 
   func url() throws -> URL {
     var components = URLComponents()
@@ -108,16 +97,13 @@ private enum BusRouteAPIRequest {
       "/6410000/busrouteservice/v2/getBusRouteLineListv2"
     case .routeList:
       "/6410000/busrouteservice/v2/getBusRouteListv2"
-    case .routeStations:
-      "/6410000/busrouteservice/v2/getBusRouteStationListv2"
     }
   }
 
   private var query: String {
     switch self {
     case let .routeInfo(routeId, serviceKey),
-         let .routeLine(routeId, serviceKey),
-         let .routeStations(routeId, serviceKey):
+         let .routeLine(routeId, serviceKey):
       [
         "serviceKey=\(percentEncodedQueryValue(serviceKey))",
         "routeId=\(routeId)",

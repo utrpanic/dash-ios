@@ -3,18 +3,15 @@ import ComposableArchitecture
 public struct SeoulBusRouteAPIClient: Sendable {
   public var fetchRouteInfo: @Sendable (_ routeId: Int) async throws -> BusRouteInfo
   public var fetchRouteLine: @Sendable (_ routeId: Int) async throws -> [BusRouteLinePoint]
-  public var fetchRouteStations: @Sendable (_ routeId: Int) async throws -> [BusRouteStation]
   public var searchRoutes: @Sendable (_ keyword: String) async throws -> [BusRoute]
 
   public init(
     fetchRouteInfo: @escaping @Sendable (_ routeId: Int) async throws -> BusRouteInfo,
     fetchRouteLine: @escaping @Sendable (_ routeId: Int) async throws -> [BusRouteLinePoint],
-    fetchRouteStations: @escaping @Sendable (_ routeId: Int) async throws -> [BusRouteStation],
     searchRoutes: @escaping @Sendable (_ keyword: String) async throws -> [BusRoute]
   ) {
     self.fetchRouteInfo = fetchRouteInfo
     self.fetchRouteLine = fetchRouteLine
-    self.fetchRouteStations = fetchRouteStations
     self.searchRoutes = searchRoutes
   }
 }
@@ -46,17 +43,6 @@ extension SeoulBusRouteAPIClient: DependencyKey {
 
       return try response.items.map { try SeoulBusRouteLineDTO(fields: $0).toDomain() }
     },
-    fetchRouteStations: { routeId in
-      let response = try await SeoulBusAPITransport.fetch(
-        path: "/api/rest/busRouteInfo/getStaionByRoute",
-        parameters: [
-          ("serviceKey", try SeoulBusAPITransport.serviceKey()),
-          ("busRouteId", String(routeId)),
-        ]
-      )
-
-      return try response.items.map { try SeoulBusRouteStationDTO(fields: $0).toDomain() }
-    },
     searchRoutes: { keyword in
       let response = try await SeoulBusAPITransport.fetch(
         path: "/api/rest/busRouteInfo/getBusRouteList",
@@ -82,7 +68,6 @@ extension SeoulBusRouteAPIClient: DependencyKey {
       )
     },
     fetchRouteLine: { _ in [] },
-    fetchRouteStations: { _ in [] },
     searchRoutes: { _ in [] }
   )
 }

@@ -81,53 +81,6 @@ public struct BusRouteInfoDTO: Decodable, Equatable, Sendable {
   }
 }
 
-public struct BusRouteStationResponseDTO: Decodable, Equatable, Sendable {
-  public let response: ResponseDTO
-
-  func toDomain() -> [BusRouteStation] {
-    response.msgBody.busRouteStationList.map { $0.toDomain() }
-  }
-}
-
-extension BusRouteStationResponseDTO: BusRouteAPIResponseDTO {
-  var resultCode: Int { response.msgHeader.resultCode }
-  var resultMessage: String { response.msgHeader.resultMessage }
-}
-
-public extension BusRouteStationResponseDTO {
-  struct ResponseDTO: Decodable, Equatable, Sendable {
-    public let msgHeader: BusRouteListResponseDTO.MessageHeaderDTO
-    public let msgBody: MessageBodyDTO
-  }
-
-  struct MessageBodyDTO: Decodable, Equatable, Sendable {
-    public let busRouteStationList: [BusRouteStationDTO]
-  }
-}
-
-public struct BusRouteStationDTO: Decodable, Equatable, Sendable {
-  public let mobileNo: LossyStringDTO?
-  public let stationId: Int
-  public let stationName: String
-  public let stationSeq: Int
-  public let turnYn: String?
-  public let x: Double
-  public let y: Double
-
-  func toDomain() -> BusRouteStation {
-    BusRouteStation(
-      busStop: BusStop(
-        id: stationId,
-        name: stationName,
-        latitude: y,
-        longitude: x
-      ),
-      sequence: stationSeq,
-      isTurnPoint: turnYn == "Y"
-    )
-  }
-}
-
 public struct BusRouteLineResponseDTO: Decodable, Equatable, Sendable {
   public let response: ResponseDTO
 

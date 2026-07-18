@@ -19,16 +19,6 @@ import Testing
   #expect(!routeInfo.endStationName.isEmpty)
 }
 
-@Test func fetchBusRouteStationsThroughFeature() async throws {
-  let stations = try await BusRouteAPIClient.liveValue.fetchRouteStations(234000130)
-  let firstStation = try #require(stations.first)
-
-  #expect(!stations.isEmpty)
-  #expect(firstStation.busStop.id > 0)
-  #expect(!firstStation.busStop.name.isEmpty)
-  #expect(firstStation.sequence > 0)
-}
-
 @Test func fetchBusRouteLineThroughFeature() async throws {
   let linePoints = try await BusRouteAPIClient.liveValue.fetchRouteLine(234000130)
   let firstPoint = try #require(linePoints.first)
@@ -55,29 +45,6 @@ import Testing
 
     #expect(routeInfo.route == route)
     #expect(routeInfo.regionName.contains("수원"))
-  }
-}
-
-@Test func fetchKnownSuwonStationConstantsThroughFeature() async throws {
-  let expectedStations: [(route: BusRoute, busStop: BusStop, sequence: Int)] = [
-    (.gyeonggi_9, .homaesilSsangyongApartment, 2),
-    (.gyeonggi_9_1, .homaesilSsangyongApartment, 10),
-    (.gyeonggi_13, .suwonStationExit7Outer, 26),
-    (.gyeonggi_13_1, .suwonStationExit7Inner, 54),
-    (.gyeonggi_13_4, .suwonStationExit7Outer, 33),
-    (.gyeonggi_13_5, .suwonStationExit7Inner, 35),
-    (.gyeonggi_15_1, .suwonStationExit7Outer, 145),
-    (.gyeonggi_13, .homaesilSsangyongApartment, 46),
-  ]
-
-  for expectedStation in expectedStations {
-    let stations = try await BusRouteAPIClient.liveValue.fetchRouteStations(expectedStation.route.id)
-    let station = try #require(
-      stations.first { $0.busStop.id == expectedStation.busStop.id }
-    )
-
-    #expect(station.busStop == expectedStation.busStop)
-    #expect(station.sequence == expectedStation.sequence)
   }
 }
 

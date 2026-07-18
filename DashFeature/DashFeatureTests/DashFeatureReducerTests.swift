@@ -3,7 +3,7 @@ import Testing
 @testable import DashFeature
 
 @MainActor
-@Test func reducerLoadsUpcomingBusesAfterSelectingTab() async {
+@Test func reducerLoadsUpcomingBusesAfterSelectingBoardingPoint() async {
   let expectedUpcomingBus = UpcomingBus(
     boardingPoint: .homaesilSsangyongApartment,
     busStop: .homaesilSsangyongApartment,
@@ -41,7 +41,7 @@ import Testing
     }
   }
 
-  await store.send(.tabSelected("homaesil-ssangyong-apartment")) {
+  await store.send(.boardingPointSelected("homaesil-ssangyong-apartment")) {
     $0.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   }
   await store.receive(.loadUpcomingBuses) {
@@ -124,9 +124,9 @@ import Testing
   let boardingPoint = BoardingPoint(
     id: "test",
     name: "Test",
-    stops: [
-      BusStop(id: 1, name: "First", latitude: 37, longitude: 126),
-      BusStop(id: 2, name: "Second", latitude: 39, longitude: 128),
+    routes: [
+      BusStop(id: 1, name: "First", latitude: 37, longitude: 126): [],
+      BusStop(id: 2, name: "Second", latitude: 39, longitude: 128): [],
     ]
   )
 
