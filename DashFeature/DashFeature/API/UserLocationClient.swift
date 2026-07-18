@@ -12,17 +12,17 @@ public struct UserLocation: Equatable, Sendable {
 }
 
 public struct UserLocationClient: Sendable {
-  public var requestLocation: @MainActor @Sendable () async throws -> UserLocation
+  public var requestLocation: @Sendable () async throws -> UserLocation
 
   public init(
-    requestLocation: @escaping @MainActor @Sendable () async throws -> UserLocation
+    requestLocation: @escaping @Sendable () async throws -> UserLocation
   ) {
     self.requestLocation = requestLocation
   }
 }
 
 extension UserLocationClient: DependencyKey {
-  public static let liveValue = Self {
+  public static let liveValue = UserLocationClient {
     let session = CLServiceSession(authorization: .whenInUse)
     defer { session.invalidate() }
 
@@ -49,7 +49,7 @@ extension UserLocationClient: DependencyKey {
     throw UserLocationError.locationUnavailable
   }
 
-  public static let testValue = Self {
+  public static let testValue = UserLocationClient {
     throw UserLocationError.locationUnavailable
   }
 }
