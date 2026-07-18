@@ -79,6 +79,32 @@ import Testing
   }
 
   await store.send(.nextBoardingPointButtonTapped) {
+    $0.boardingPointSelection = .selected("yeongdeungpo-station")
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = []
+    $0.upcomingBusesErrorMessage = nil
+  }
+
+  await store.send(.nextBoardingPointButtonTapped) {
+    $0.boardingPointSelection = .selected("the-hyundai-seoul")
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = []
+    $0.upcomingBusesErrorMessage = nil
+  }
+
+  await store.send(.nextBoardingPointButtonTapped) {
     $0.boardingPointSelection = .selected("suwon-station")
   }
   await store.receive(.loadUpcomingBuses) {

@@ -3,6 +3,8 @@ extension Array where Element == BoardingPoint {
     [
       .suwonStation,
       .homaesilSsangyongApartment,
+      .yeongdeungpoStation,
+      .theHyundaiSeoul,
     ]
   }
 }

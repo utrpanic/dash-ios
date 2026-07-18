@@ -43,4 +43,18 @@ public extension BusStop {
     latitude: 37.2678,
     longitude: 126.9513167
   )
+  static let yeongdeungpoStation = BusStop(
+    id: 118000005,
+    name: "영등포역",
+    alias: nil,
+    latitude: 37.5158657465,
+    longitude: 126.90509208
+  )
+  static let theHyundaiSeoul = BusStop(
+    id: 118000197,
+    name: "더현대서울",
+    alias: nil,
+    latitude: 37.5250045778,
+    longitude: 126.9281836353
+  )
 }

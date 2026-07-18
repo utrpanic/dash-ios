@@ -46,4 +46,22 @@ public extension BoardingPoint {
       ],
     ]
   )
+  static let yeongdeungpoStation = BoardingPoint(
+    id: "yeongdeungpo-station",
+    name: "영등포역",
+    routes: [
+      .yeongdeungpoStation: [
+        .gyeonggi_88,
+      ],
+    ]
+  )
+  static let theHyundaiSeoul = BoardingPoint(
+    id: "the-hyundai-seoul",
+    name: "더현대서울",
+    routes: [
+      .theHyundaiSeoul: [
+        .gyeonggi_88,
+      ],
+    ]
+  )
 }
