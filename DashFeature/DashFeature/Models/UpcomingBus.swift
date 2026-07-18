@@ -2,21 +2,21 @@ import Foundation
 
 public struct UpcomingBus: Equatable, Hashable, Identifiable, Sendable {
   public var id: String {
-    "\(targetStop.id)-\(busStop.id)-\(busRoute.id)-\(timeIntervalUntilArrival)"
+    "\(boardingPoint.id)-\(busStop.id)-\(busRoute.id)-\(timeIntervalUntilArrival)"
   }
 
-  public let targetStop: TargetStop
+  public let boardingPoint: BoardingPoint
   public let busStop: BusStop
   public let busRoute: BusRoute
   public let timeIntervalUntilArrival: TimeInterval
 
   public init(
-    targetStop: TargetStop,
+    boardingPoint: BoardingPoint,
     busStop: BusStop,
     busRoute: BusRoute,
     timeIntervalUntilArrival: TimeInterval
   ) {
-    self.targetStop = targetStop
+    self.boardingPoint = boardingPoint
     self.busStop = busStop
     self.busRoute = busRoute
     self.timeIntervalUntilArrival = timeIntervalUntilArrival

@@ -5,7 +5,7 @@ import Testing
 @MainActor
 @Test func reducerLoadsUpcomingBusesAfterSelectingTab() async {
   let expectedUpcomingBus = UpcomingBus(
-    targetStop: .homaesilSsangyongApartment,
+    boardingPoint: .homaesilSsangyongApartment,
     busStop: .homaesilSsangyongApartment,
     busRoute: .gyeonggi_9,
     timeIntervalUntilArrival: 3 * 60
@@ -42,7 +42,7 @@ import Testing
   }
 
   await store.send(.tabSelected("homaesil-ssangyong-apartment")) {
-    $0.targetStopSelection = .selected("homaesil-ssangyong-apartment")
+    $0.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -56,17 +56,17 @@ import Testing
 }
 
 @MainActor
-@Test func reducerSelectsNextTargetStop() async {
+@Test func reducerSelectsNextBoardingPoint() async {
   var initialState = DashFeature.State()
-  initialState.targetStopSelection = .selected("suwon-station")
+  initialState.boardingPointSelection = .selected("suwon-station")
   let store = TestStore(initialState: initialState) {
     DashFeature()
   } withDependencies: {
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
   }
 
-  await store.send(.nextTargetStopButtonTapped) {
-    $0.targetStopSelection = .selected("homaesil-ssangyong-apartment")
+  await store.send(.nextBoardingPointButtonTapped) {
+    $0.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -78,8 +78,8 @@ import Testing
     $0.upcomingBusesErrorMessage = nil
   }
 
-  await store.send(.nextTargetStopButtonTapped) {
-    $0.targetStopSelection = .selected("suwon-station")
+  await store.send(.nextBoardingPointButtonTapped) {
+    $0.boardingPointSelection = .selected("suwon-station")
   }
   await store.receive(.loadUpcomingBuses) {
     $0.isLoadingUpcomingBuses = true
@@ -93,10 +93,10 @@ import Testing
 }
 
 @MainActor
-@Test func reducerSelectsNearestTargetStopOnTask() async {
+@Test func reducerSelectsNearestBoardingPointOnTask() async {
   let location = UserLocation(
-    latitude: TargetStop.homaesilSsangyongApartment.centerLatitude,
-    longitude: TargetStop.homaesilSsangyongApartment.centerLongitude
+    latitude: BoardingPoint.homaesilSsangyongApartment.centerLatitude,
+    longitude: BoardingPoint.homaesilSsangyongApartment.centerLongitude
   )
   let store = TestStore(initialState: DashFeature.State()) {
     DashFeature()
@@ -110,7 +110,7 @@ import Testing
     $0.isLoadingUpcomingBuses = true
   }
   await store.receive(.userLocationResponse(.success(location))) {
-    $0.targetStopSelection = .selected("homaesil-ssangyong-apartment")
+    $0.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   }
   await store.receive(.loadUpcomingBuses)
   await store.receive(.loadUpcomingBusesResponse(.success([]))) {
@@ -120,24 +120,24 @@ import Testing
   }
 }
 
-@Test func targetStopUsesCenterOfBusStops() {
-  let targetStop = TargetStop(
+@Test func boardingPointUsesCenterOfBusStops() {
+  let boardingPoint = BoardingPoint(
     id: "test",
     name: "Test",
-    busStops: [
+    stops: [
       BusStop(id: 1, name: "First", latitude: 37, longitude: 126),
       BusStop(id: 2, name: "Second", latitude: 39, longitude: 128),
     ]
   )
 
-  #expect(targetStop.centerLatitude == 38)
-  #expect(targetStop.centerLongitude == 127)
+  #expect(boardingPoint.centerLatitude == 38)
+  #expect(boardingPoint.centerLongitude == 127)
 }
 
 @MainActor
-@Test func reducerRefreshesWithoutChangingTargetStop() async {
+@Test func reducerRefreshesWithoutChangingBoardingPoint() async {
   var initialState = DashFeature.State()
-  initialState.targetStopSelection = .selected("homaesil-ssangyong-apartment")
+  initialState.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   let store = TestStore(initialState: initialState) {
     DashFeature()
   } withDependencies: {
@@ -171,7 +171,7 @@ import Testing
     $0.isLoadingUpcomingBuses = true
   }
   await store.receive(.userLocationResponse(.authorizationDenied)) {
-    $0.targetStopSelection = .locationPermissionDenied
+    $0.boardingPointSelection = .locationPermissionDenied
     $0.isLoadingUpcomingBuses = false
   }
 }

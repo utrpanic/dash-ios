@@ -31,7 +31,7 @@ public struct BusArrival: Equatable, Hashable, Identifiable, Sendable {
     self.secondPrediction = secondPrediction
   }
 
-  public func upcomingBuses(targetStop: TargetStop, busStop: BusStop) -> [UpcomingBus] {
+  public func upcomingBuses(boardingPoint: BoardingPoint, busStop: BusStop) -> [UpcomingBus] {
     [firstPrediction, secondPrediction]
       .compactMap { prediction in
         guard let timeInterval = prediction?.timeIntervalUntilArrival else {
@@ -39,7 +39,7 @@ public struct BusArrival: Equatable, Hashable, Identifiable, Sendable {
         }
 
         return UpcomingBus(
-          targetStop: targetStop,
+          boardingPoint: boardingPoint,
           busStop: busStop,
           busRoute: route,
           timeIntervalUntilArrival: timeInterval

@@ -27,7 +27,7 @@ import Testing
   #expect(arrival.stationOrder == firstArrival.stationOrder)
 }
 
-@Test func fetchTargetStopBusArrivalsThroughFeature() async throws {
+@Test func fetchBoardingPointBusArrivalsThroughFeature() async throws {
   let stationIds = [
     BusStop.suwonStationExit7Outer.id,
     BusStop.suwonStationExit7Inner.id,

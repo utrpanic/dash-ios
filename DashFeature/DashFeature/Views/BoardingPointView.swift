@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TargetStopView: View {
+struct BoardingPointView: View {
   let upcomingBuses: [UpcomingBus]
 
   var body: some View {

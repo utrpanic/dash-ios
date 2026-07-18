@@ -1,10 +1,10 @@
-extension Array where Element == TargetStopTab {
-  static var mock: [TargetStopTab] {
+extension Array where Element == BoardingPointTab {
+  static var mock: [BoardingPointTab] {
     [
       .init(
         id: "suwon-station",
         title: "수원역",
-        targetStops: [
+        boardingPoints: [
           .suwonStation,
         ],
         busRoutes: [
@@ -18,7 +18,7 @@ extension Array where Element == TargetStopTab {
       .init(
         id: "homaesil-ssangyong-apartment",
         title: "호매실쌍용아파트",
-        targetStops: [
+        boardingPoints: [
           .homaesilSsangyongApartment,
         ],
         busRoutes: [

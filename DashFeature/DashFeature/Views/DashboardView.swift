@@ -21,9 +21,9 @@ public struct DashboardView: View {
           ProgressView()
             .frame(maxWidth: .infinity)
           Spacer()
-        } else if let targetStopSelectionMessage {
+        } else if let boardingPointSelectionMessage {
           Spacer()
-          Text(targetStopSelectionMessage)
+          Text(boardingPointSelectionMessage)
             .font(.system(size: 15, weight: .medium))
             .foregroundStyle(r.color.textSecondary)
             .multilineTextAlignment(.center)
@@ -40,7 +40,7 @@ public struct DashboardView: View {
           Spacer()
         } else {
           ScrollView {
-            TargetStopView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
+            BoardingPointView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
               .padding(.horizontal, 16)
               .padding(.top, 16)
               .padding(.bottom, 84)
@@ -84,8 +84,8 @@ public struct DashboardView: View {
     store.isLoadingUpcomingBuses || store.selectedTabID == nil
   }
 
-  private var targetStopSelectionMessage: String? {
-    switch store.targetStopSelection {
+  private var boardingPointSelectionMessage: String? {
+    switch store.boardingPointSelection {
     case .locating:
       return "현재 위치를 확인하고 있습니다."
     case .locationPermissionDenied:
@@ -108,7 +108,7 @@ struct DashboardHeaderView: View {
   var body: some View {
     VStack(spacing: 16) {
       HStack(spacing: 16) {
-        targetStopButton
+        boardingPointButton
         Button {
           store.send(.editButtonTapped)
         } label: {
@@ -126,9 +126,9 @@ struct DashboardHeaderView: View {
     }
   }
 
-  private var targetStopButton: some View {
+  private var boardingPointButton: some View {
     Button {
-      store.send(.nextTargetStopButtonTapped)
+      store.send(.nextBoardingPointButtonTapped)
     } label: {
       HStack(spacing: 12) {
         Image(systemName: "location.circle.fill")
@@ -137,28 +137,28 @@ struct DashboardHeaderView: View {
           .foregroundStyle(.white, r.color.brandMint)
           .frame(width: 20, height: 20)
         ZStack(alignment: .leading) {
-          targetStopTitleLabel
-            .id(store.targetStopSelection)
+          boardingPointTitleLabel
+            .id(store.boardingPointSelection)
             .transition(.opacity)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .clipped()
-        .animation(targetStopSwitchAnimation, value: store.targetStopSelection)
+        .animation(boardingPointSwitchAnimation, value: store.boardingPointSelection)
       }
       .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     }
     .buttonStyle(.plain)
-    .disabled(store.targetStopSelection == .locating || store.tabs.isEmpty)
+    .disabled(store.boardingPointSelection == .locating || store.tabs.isEmpty)
   }
 
-  private var targetStopTitleLabel: some View {
+  private var boardingPointTitleLabel: some View {
     HStack(spacing: 6) {
-      Text(targetStopTitle)
+      Text(boardingPointTitle)
         .font(.system(size: 24, weight: .regular))
-        .foregroundStyle(targetStopTitleColor)
+        .foregroundStyle(boardingPointTitleColor)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
-      if store.targetStopSelection != .locating {
+      if store.boardingPointSelection != .locating {
         Image(systemName: "chevron.right")
           .font(.system(size: 15, weight: .medium))
           .foregroundStyle(r.color.textSecondary)
@@ -166,8 +166,8 @@ struct DashboardHeaderView: View {
     }
   }
 
-  private var targetStopTitle: String {
-    switch store.targetStopSelection {
+  private var boardingPointTitle: String {
+    switch store.boardingPointSelection {
     case .locating:
       return "위치 확인 중…"
     case .locationPermissionDenied:
@@ -179,8 +179,8 @@ struct DashboardHeaderView: View {
     }
   }
 
-  private var targetStopTitleColor: Color {
-    switch store.targetStopSelection {
+  private var boardingPointTitleColor: Color {
+    switch store.boardingPointSelection {
     case .selected:
       return r.color.textPrimary
     case .locating, .locationPermissionDenied, .locationUnavailable:
@@ -188,7 +188,7 @@ struct DashboardHeaderView: View {
     }
   }
 
-  private var targetStopSwitchAnimation: Animation {
+  private var boardingPointSwitchAnimation: Animation {
     .easeInOut(duration: 0.2)
   }
 }
