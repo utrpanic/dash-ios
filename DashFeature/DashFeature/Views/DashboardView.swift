@@ -131,19 +131,9 @@ struct DashboardHeaderView: View {
       store.send(.nextBoardingPointButtonTapped)
     } label: {
       HStack(spacing: 12) {
-        Image(systemName: "location.circle.fill")
-          .symbolRenderingMode(.palette)
-          .font(.system(size: 24, weight: .semibold))
-          .foregroundStyle(.white, r.color.brandMint)
-          .frame(width: 20, height: 20)
-        ZStack(alignment: .leading) {
-          boardingPointTitleLabel
-            .id(store.boardingPointSelection)
-            .transition(.opacity)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .clipped()
-        .animation(boardingPointSwitchAnimation, value: store.boardingPointSelection)
+        boardingPointTitleIcon
+        boardingPointTitleLabel
+          .animation(nil, value: store.boardingPointSelection)
       }
       .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     }
@@ -151,31 +141,36 @@ struct DashboardHeaderView: View {
     .disabled(store.boardingPointSelection == .locating || store.boardingPoints.isEmpty)
   }
 
+  private var boardingPointTitleIcon: some View {
+    Image(systemName: "location.circle.fill")
+      .symbolRenderingMode(.palette)
+      .font(.system(size: 24, weight: .semibold))
+      .foregroundStyle(.white, r.color.brandMint)
+      .frame(width: 20, height: 20)
+  }
+
   private var boardingPointTitleLabel: some View {
-    HStack(spacing: 6) {
-      Text(boardingPointTitle)
+    let (title, showTrailingIcon) = switch store.boardingPointSelection {
+    case .locating:
+      ("위치 확인 중…", false)
+    case .locationPermissionDenied:
+      ("위치 권한 없음", true)
+    case .locationUnavailable:
+      ("위치 확인 불가", true)
+    case let .selected(boardingPointID):
+      (store.boardingPoints.first { $0.id == boardingPointID }?.name ?? "", true)
+    }
+    return HStack(spacing: 8) {
+      Text(title)
         .font(.system(size: 24, weight: .regular))
         .foregroundStyle(boardingPointTitleColor)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
-      if store.boardingPointSelection != .locating {
+      if showTrailingIcon {
         Image(systemName: "chevron.right")
           .font(.system(size: 15, weight: .medium))
           .foregroundStyle(r.color.textSecondary)
       }
-    }
-  }
-
-  private var boardingPointTitle: String {
-    switch store.boardingPointSelection {
-    case .locating:
-      return "위치 확인 중…"
-    case .locationPermissionDenied:
-      return "위치 권한 없음"
-    case .locationUnavailable:
-      return "위치 확인 불가"
-    case let .selected(boardingPointID):
-      return store.boardingPoints.first { $0.id == boardingPointID }?.name ?? ""
     }
   }
 
@@ -186,10 +181,6 @@ struct DashboardHeaderView: View {
     case .locating, .locationPermissionDenied, .locationUnavailable:
       return r.color.textSecondary
     }
-  }
-
-  private var boardingPointSwitchAnimation: Animation {
-    .easeInOut(duration: 0.2)
   }
 }
 
