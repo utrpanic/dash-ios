@@ -118,12 +118,12 @@ public struct BusRouteStationDTO: Decodable, Equatable, Sendable {
     BusRouteStation(
       busStop: BusStop(
         id: stationId,
-        name: stationName
+        name: stationName,
+        latitude: y,
+        longitude: x
       ),
       sequence: stationSeq,
-      isTurnPoint: turnYn == "Y",
-      x: x,
-      y: y
+      isTurnPoint: turnYn == "Y"
     )
   }
 }

@@ -76,8 +76,7 @@ import Testing
       stations.first { $0.busStop.id == expectedStation.busStop.id }
     )
 
-    #expect(station.busStop.id == expectedStation.busStop.id)
-    #expect(station.busStop.name == expectedStation.busStop.name)
+    #expect(station.busStop == expectedStation.busStop)
     #expect(station.sequence == expectedStation.sequence)
   }
 }

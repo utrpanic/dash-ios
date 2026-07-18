@@ -95,8 +95,8 @@ import Testing
 @MainActor
 @Test func reducerSelectsNearestTargetStopOnTask() async {
   let location = UserLocation(
-    latitude: TargetStop.homaesilSsangyongApartment.latitude,
-    longitude: TargetStop.homaesilSsangyongApartment.longitude
+    latitude: TargetStop.homaesilSsangyongApartment.centerLatitude,
+    longitude: TargetStop.homaesilSsangyongApartment.centerLongitude
   )
   let store = TestStore(initialState: DashFeature.State()) {
     DashFeature()
@@ -118,6 +118,20 @@ import Testing
     $0.upcomingBuses = []
     $0.upcomingBusesErrorMessage = nil
   }
+}
+
+@Test func targetStopUsesCenterOfBusStops() {
+  let targetStop = TargetStop(
+    id: "test",
+    name: "Test",
+    busStops: [
+      BusStop(id: 1, name: "First", latitude: 37, longitude: 126),
+      BusStop(id: 2, name: "Second", latitude: 39, longitude: 128),
+    ]
+  )
+
+  #expect(targetStop.centerLatitude == 38)
+  #expect(targetStop.centerLongitude == 127)
 }
 
 @MainActor

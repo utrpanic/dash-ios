@@ -232,10 +232,10 @@ private extension DashFeature {
 
   static func distance(from location: UserLocation, to targetStop: TargetStop) -> Double {
     let earthRadius = 6_371_000.0
-    let latitudeDelta = radians(targetStop.latitude - location.latitude)
-    let longitudeDelta = radians(targetStop.longitude - location.longitude)
+    let latitudeDelta = radians(targetStop.centerLatitude - location.latitude)
+    let longitudeDelta = radians(targetStop.centerLongitude - location.longitude)
     let sourceLatitude = radians(location.latitude)
-    let destinationLatitude = radians(targetStop.latitude)
+    let destinationLatitude = radians(targetStop.centerLatitude)
     let haversine = sin(latitudeDelta / 2) * sin(latitudeDelta / 2)
       + cos(sourceLatitude) * cos(destinationLatitude)
       * sin(longitudeDelta / 2) * sin(longitudeDelta / 2)

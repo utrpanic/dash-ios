@@ -83,11 +83,14 @@ struct SeoulBusRouteStationDTO: Equatable, Sendable {
 
   func toDomain() -> BusRouteStation {
     BusRouteStation(
-      busStop: BusStop(id: stationId, name: stationName),
+      busStop: BusStop(
+        id: stationId,
+        name: stationName,
+        latitude: y,
+        longitude: x
+      ),
       sequence: sequence,
-      isTurnPoint: isTurnPoint,
-      x: x,
-      y: y
+      isTurnPoint: isTurnPoint
     )
   }
 }
