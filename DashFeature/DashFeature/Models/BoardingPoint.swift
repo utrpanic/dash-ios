@@ -37,7 +37,7 @@ public extension BoardingPoint {
   )
   static let homaesilSsangyongApartment = BoardingPoint(
     id: "homaesil-ssangyong-apartment",
-    name: "호매실쌍용아파트",
+    name: "쌍용아파트",
     routes: [
       .homaesilSsangyongApartment: [
         .gyeonggi_9,

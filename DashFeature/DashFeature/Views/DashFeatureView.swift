@@ -9,13 +9,36 @@ public struct DashFeatureView: View {
   }
 
   public var body: some View {
+    NavigationStack {
+      content
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .topBarLeading) {
+            DashNavigationTitleView(store: store)
+              .fixedSize(horizontal: true, vertical: false)
+              .transaction {
+                $0.animation = nil
+                $0.disablesAnimations = true
+              }
+          }
+          .sharedBackgroundVisibility(.hidden)
+          ToolbarItem(placement: .topBarTrailing) {
+            DashNavigationTrailingView(store: store)
+          }
+          .sharedBackgroundVisibility(.hidden)
+        }
+        .toolbarBackground(r.color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+    }
+  }
+
+  private var content: some View {
     ZStack {
       r.color.background
         .ignoresSafeArea()
       VStack(spacing: 0) {
-        DashHeaderView(store: store)
-          .padding(.horizontal, 16)
-          .padding(.top, 16)
+        Divider()
+          .background(r.color.textSecondary.opacity(0.25))
         if store.isLoadingUpcomingBuses {
           Spacer()
           ProgressView()
@@ -28,7 +51,6 @@ public struct DashFeatureView: View {
             .foregroundStyle(r.color.textSecondary)
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 16)
           Spacer()
         } else if let errorMessage = store.upcomingBusesErrorMessage {
           Spacer()
@@ -36,17 +58,16 @@ public struct DashFeatureView: View {
             .font(.system(size: 15, weight: .medium))
             .foregroundStyle(r.color.textSecondary)
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 16)
           Spacer()
         } else {
           ScrollView {
             BoardingPointView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
-              .padding(.horizontal, 16)
               .padding(.top, 16)
               .padding(.bottom, 84)
           }
         }
       }
+      .padding(.horizontal, 16)
       VStack {
         Spacer()
         HStack {
@@ -87,8 +108,8 @@ public struct DashFeatureView: View {
         .shadow(color: .black.opacity(0.14), radius: 7, y: 2)
     }
     .buttonStyle(.plain)
-    .disabled(isLocationDisabled)
-    .opacity(isLocationDisabled ? 0.55 : 1)
+    .disabled(areFloatingButtonsDisabled)
+    .opacity(areFloatingButtonsDisabled ? 0.55 : 1)
     .accessibilityLabel("현재 위치")
   }
 
@@ -104,8 +125,8 @@ public struct DashFeatureView: View {
         .shadow(color: .black.opacity(0.18), radius: 8, y: 3)
     }
     .buttonStyle(.plain)
-    .disabled(isRefreshDisabled)
-    .opacity(isRefreshDisabled ? 0.55 : 1)
+    .disabled(areFloatingButtonsDisabled)
+    .opacity(areFloatingButtonsDisabled ? 0.55 : 1)
     .accessibilityLabel("새로고침")
   }
 
@@ -127,15 +148,8 @@ public struct DashFeatureView: View {
     }
   }
 
-  private var isLocationDisabled: Bool {
-    store.isRequestingUserLocation
-      || store.isLoadingUpcomingBuses
-      || store.boardingPoints.isEmpty
-      || store.boardingPointSelection == .locationPermissionDenied
-  }
-
-  private var isRefreshDisabled: Bool {
-    store.isLoadingUpcomingBuses || store.selectedBoardingPointID == nil
+  private var areFloatingButtonsDisabled: Bool {
+    store.isLoadingUpcomingBuses || store.boardingPointIsNotAvailable
   }
 
   private func elapsedTimeText(from startDate: Date, to endDate: Date) -> String {
@@ -179,7 +193,7 @@ public struct DashFeatureView: View {
   }
 }
 
-struct DashHeaderView: View {
+struct DashNavigationTitleView: View {
   @Bindable private var store: StoreOf<DashFeatureReducer>
 
   init(store: StoreOf<DashFeatureReducer>) {
@@ -187,36 +201,17 @@ struct DashHeaderView: View {
   }
 
   var body: some View {
-    VStack(spacing: 16) {
-      HStack(spacing: 16) {
-        boardingPointButton
-        Button {
-          store.send(.editButtonTapped)
-        } label: {
-          Image(systemName: "square.and.pencil")
-            .font(.system(size: 24, weight: .light))
-            .foregroundStyle(r.color.textSecondary)
-            .frame(width: 44, height: 44)
-            .offset(y: -2)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("편집")
-      }
-      Divider()
-        .background(r.color.textSecondary.opacity(0.25))
-    }
+    boardingPointButton
   }
 
   private var boardingPointButton: some View {
     Button {
       store.send(.nextBoardingPointButtonTapped)
     } label: {
-      HStack(spacing: 12) {
+      HStack(spacing: 8) {
         boardingPointTitleIcon
         boardingPointTitleLabel
-          .animation(nil, value: store.boardingPointSelection)
       }
-      .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     }
     .buttonStyle(.plain)
     .disabled(store.boardingPointSelection == .locating || store.boardingPoints.isEmpty)
@@ -227,7 +222,6 @@ struct DashHeaderView: View {
       .symbolRenderingMode(.palette)
       .font(.system(size: 24, weight: .semibold))
       .foregroundStyle(.white, r.color.brandMint)
-      .frame(width: 20, height: 20)
   }
 
   private var boardingPointTitleLabel: some View {
@@ -235,9 +229,9 @@ struct DashHeaderView: View {
     case .locating:
       ("위치 확인 중…", false)
     case .locationPermissionDenied:
-      ("위치 권한 없음", true)
+      ("위치 권한 없음", false)
     case .locationUnavailable:
-      ("위치 확인 불가", true)
+      ("위치 확인 불가", false)
     case let .selected(boardingPointID):
       (store.boardingPoints.first { $0.id == boardingPointID }?.name ?? "", true)
     }
@@ -246,10 +240,10 @@ struct DashHeaderView: View {
         .font(.system(size: 24, weight: .regular))
         .foregroundStyle(boardingPointTitleColor)
         .lineLimit(1)
-        .minimumScaleFactor(0.8)
+        .frame(maxWidth: 160, alignment: .leading)
       if showTrailingIcon {
         Image(systemName: "chevron.right")
-          .font(.system(size: 15, weight: .medium))
+          .font(.system(size: 16, weight: .medium))
           .foregroundStyle(r.color.textSecondary)
       }
     }
@@ -261,6 +255,37 @@ struct DashHeaderView: View {
       return r.color.textPrimary
     case .locating, .locationPermissionDenied, .locationUnavailable:
       return r.color.textSecondary
+    }
+  }
+}
+
+struct DashNavigationTrailingView: View {
+  @Bindable private var store: StoreOf<DashFeatureReducer>
+
+  init(store: StoreOf<DashFeatureReducer>) {
+    self.store = store
+  }
+  
+  var body: some View {
+    HStack(spacing: 0) {
+      Button {
+        store.send(.editButtonTapped)
+      } label: {
+        Image(systemName: "square.and.pencil")
+          .padding(.horizontal, 4)
+      }
+      .tint(r.color.textSecondary)
+      .disabled(store.boardingPointIsNotAvailable)
+      .accessibilityLabel("편집")
+      Button {
+        
+      } label: {
+        Image(systemName: "list.bullet")
+          .offset(x: 0, y: 2)
+          .padding(.horizontal, 4)
+      }
+      .tint(r.color.textSecondary)
+      .accessibilityLabel("목록")
     }
   }
 }

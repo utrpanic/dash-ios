@@ -44,4 +44,7 @@ public struct DashFeatureState: Equatable {
     }
     return boardingPointID
   }
+  public var boardingPointIsNotAvailable: Bool {
+    selectedBoardingPointID == nil
+  }
 }

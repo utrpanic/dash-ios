@@ -14,6 +14,7 @@ public struct DashFeatureReducer {
 
   public enum Action: Equatable {
     case editButtonTapped
+    case listButtonTapped
     case busRouteSearchRequested(keyword: String)
     case busRouteSearchResponse(BusRouteSearchResponse)
     case loadUpcomingBuses
@@ -51,7 +52,8 @@ public struct DashFeatureReducer {
       switch action {
       case .editButtonTapped:
         return .none
-
+      case .listButtonTapped:
+        return .none
       case let .busRouteSearchRequested(keyword):
         state.busRouteSearchKeyword = keyword
         state.isSearchingBusRoutes = true
