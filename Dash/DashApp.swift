@@ -6,9 +6,9 @@ import SwiftUI
 struct DashApp: App {
   var body: some Scene {
     WindowGroup {
-      DashboardView(
-        store: Store(initialState: DashFeature.State()) {
-          DashFeature()
+      DashFeatureView(
+        store: Store(initialState: DashFeatureState()) {
+          DashFeatureReducer()
         }
       )
     }

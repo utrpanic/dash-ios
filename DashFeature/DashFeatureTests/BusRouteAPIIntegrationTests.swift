@@ -50,8 +50,8 @@ import Testing
 
 @MainActor
 @Test func reducerStoresSearchedBusRoutes() async {
-  let store = TestStore(initialState: DashFeature.State()) {
-    DashFeature()
+  let store = TestStore(initialState: DashFeatureState()) {
+    DashFeatureReducer()
   } withDependencies: {
     $0.busRouteAPIClient.searchRoutes = { _ in
       [

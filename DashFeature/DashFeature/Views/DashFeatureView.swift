@@ -1,10 +1,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct DashboardView: View {
-  @Bindable private var store: StoreOf<DashFeature>
+public struct DashFeatureView: View {
+  @Bindable private var store: StoreOf<DashFeatureReducer>
 
-  public init(store: StoreOf<DashFeature>) {
+  public init(store: StoreOf<DashFeatureReducer>) {
     self.store = store
   }
 
@@ -13,7 +13,7 @@ public struct DashboardView: View {
       r.color.background
         .ignoresSafeArea()
       VStack(spacing: 0) {
-        DashboardHeaderView(store: store)
+        DashHeaderView(store: store)
           .padding(.horizontal, 16)
           .padding(.top, 16)
         if store.isLoadingUpcomingBuses {
@@ -179,10 +179,10 @@ public struct DashboardView: View {
   }
 }
 
-struct DashboardHeaderView: View {
-  @Bindable private var store: StoreOf<DashFeature>
+struct DashHeaderView: View {
+  @Bindable private var store: StoreOf<DashFeatureReducer>
 
-  init(store: StoreOf<DashFeature>) {
+  init(store: StoreOf<DashFeatureReducer>) {
     self.store = store
   }
 
@@ -266,24 +266,24 @@ struct DashboardHeaderView: View {
 }
 
 #Preview("Light") {
-  DashboardView(
+  DashFeatureView(
     store: Store(initialState: .preview) {
-      DashFeature()
+      DashFeatureReducer()
     }
   )
   .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-  DashboardView(
+  DashFeatureView(
     store: Store(initialState: .preview) {
-      DashFeature()
+      DashFeatureReducer()
     }
   )
   .preferredColorScheme(.dark)
 }
 
-private extension DashFeature.State {
+private extension DashFeatureState {
   static var preview: Self {
     var state = Self()
     state.boardingPointSelection = .selected(BoardingPoint.suwonStation.id)

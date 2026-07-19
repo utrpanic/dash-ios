@@ -13,8 +13,8 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
     busRoute: .gyeonggi_9,
     timeIntervalUntilArrival: 3 * 60
   )
-  let store = TestStore(initialState: DashFeature.State()) {
-    DashFeature()
+  let store = TestStore(initialState: DashFeatureState()) {
+    DashFeatureReducer()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { stationId in
@@ -62,10 +62,10 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 
 @MainActor
 @Test func reducerSelectsNextBoardingPoint() async {
-  var initialState = DashFeature.State()
+  var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("suwon-station")
   let store = TestStore(initialState: initialState) {
-    DashFeature()
+    DashFeatureReducer()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
@@ -137,8 +137,8 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
     latitude: BoardingPoint.homaesilSsangyongApartment.centerLatitude,
     longitude: BoardingPoint.homaesilSsangyongApartment.centerLongitude
   )
-  let store = TestStore(initialState: DashFeature.State()) {
-    DashFeature()
+  let store = TestStore(initialState: DashFeatureState()) {
+    DashFeatureReducer()
   } withDependencies: {
     $0.date.now = testNow
     $0.userLocationClient.requestLocation = { location }
@@ -179,10 +179,10 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 
 @MainActor
 @Test func reducerRefreshesWithoutChangingBoardingPoint() async {
-  var initialState = DashFeature.State()
+  var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   let store = TestStore(initialState: initialState) {
-    DashFeature()
+    DashFeatureReducer()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
@@ -207,10 +207,10 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
     latitude: BoardingPoint.theHyundaiSeoul.centerLatitude,
     longitude: BoardingPoint.theHyundaiSeoul.centerLongitude
   )
-  var initialState = DashFeature.State()
+  var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("yeongdeungpo-station")
   let store = TestStore(initialState: initialState) {
-    DashFeature()
+    DashFeatureReducer()
   } withDependencies: {
     $0.date.now = testNow
     $0.userLocationClient.requestLocation = { location }
@@ -238,8 +238,8 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 
 @MainActor
 @Test func reducerRepresentsDeniedLocationPermission() async {
-  let store = TestStore(initialState: DashFeature.State()) {
-    DashFeature()
+  let store = TestStore(initialState: DashFeatureState()) {
+    DashFeatureReducer()
   } withDependencies: {
     $0.userLocationClient.requestLocation = {
       throw UserLocationError.authorizationDenied
