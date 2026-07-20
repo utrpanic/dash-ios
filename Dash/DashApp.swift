@@ -8,7 +8,7 @@ struct DashApp: App {
     WindowGroup {
       DashFeatureView(
         store: Store(initialState: DashFeatureState()) {
-          DashFeatureReducer()
+          DashFeature()
         }
       )
     }

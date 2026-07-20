@@ -26,7 +26,7 @@ struct SeoulBusArrivalDTO: Equatable, Sendable {
   func toDomain() -> BusArrival {
     BusArrival(
       stationId: stationId,
-      route: BusRoute(id: routeId, number: routeNumber),
+      route: BusRoute(id: routeId, number: routeNumber, region: .seoul),
       stationOrder: stationOrder,
       destinationName: destinationName,
       operationState: isDetouring ? "우회" : "",

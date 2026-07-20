@@ -59,7 +59,7 @@ extension SeoulBusRouteAPIClient: DependencyKey {
   public static let testValue = Self(
     fetchRouteInfo: { routeId in
       BusRouteInfo(
-        route: BusRoute(id: routeId, number: ""),
+        route: BusRoute(id: routeId, number: "", region: .seoul),
         routeTypeName: "",
         regionName: "서울",
         companyName: "",

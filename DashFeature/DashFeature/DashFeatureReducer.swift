@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct DashFeatureReducer {
+public struct DashFeature: Sendable {
   public typealias State = DashFeatureState
 
   public init() {}
@@ -10,6 +10,7 @@ public struct DashFeatureReducer {
   @Dependency(\.busArrivalAPIClient) var busArrivalAPIClient
   @Dependency(\.busRouteAPIClient) var busRouteAPIClient
   @Dependency(\.date.now) var now
+  @Dependency(\.seoulBusArrivalAPIClient) var seoulBusArrivalAPIClient
   @Dependency(\.userLocationClient) var userLocationClient
 
   public enum Action: Equatable {
@@ -91,14 +92,10 @@ public struct DashFeatureReducer {
 
         state.isLoadingUpcomingBuses = true
         state.upcomingBusesErrorMessage = nil
-        let fetchArrivals = busArrivalAPIClient.fetchArrivals
 
         return .run { send in
           do {
-            let upcomingBuses = try await Self.fetchUpcomingBuses(
-              boardingPoint: boardingPoint,
-              fetchArrivals: fetchArrivals
-            )
+            let upcomingBuses = try await self.fetchUpcomingBuses(boardingPoint: boardingPoint)
             await send(.loadUpcomingBusesResponse(.success(upcomingBuses)))
           } catch {
             await send(.loadUpcomingBusesResponse(.failure(String(describing: error))))
@@ -211,7 +208,7 @@ public struct DashFeatureReducer {
   }
 }
 
-private extension DashFeatureReducer {
+private extension DashFeature {
   static func nearestBoardingPointID(
     to location: UserLocation,
     in boardingPoints: [BoardingPoint]
@@ -242,16 +239,27 @@ private extension DashFeatureReducer {
     degrees * .pi / 180
   }
 
-  static func fetchUpcomingBuses(
-    boardingPoint: BoardingPoint,
-    fetchArrivals: @escaping @Sendable (_ stationId: Int) async throws -> [BusArrival]
-  ) async throws -> [UpcomingBus] {
+  func fetchUpcomingBuses(boardingPoint: BoardingPoint) async throws -> [UpcomingBus] {
     var upcomingBuses: [UpcomingBus] = []
 
     for (busStop, busRoutes) in boardingPoint.routes {
-      let busRouteIDs = Set(busRoutes.map(\.id))
-      let arrivals = try await fetchArrivals(busStop.id)
-      let matchingArrivals = arrivals.filter { busRouteIDs.contains($0.route.id) }
+      let gyeonggiBusRoutes = busRoutes.filter { $0.region == .gyeonggi }
+      let seoulBusRoutes = busRoutes.filter { $0.region == .seoul }
+      var matchingArrivals: [BusArrival] = []
+
+      if !gyeonggiBusRoutes.isEmpty {
+        let busRouteIDs = Set(gyeonggiBusRoutes.map(\.id))
+        let arrivals = try await busArrivalAPIClient.fetchArrivals(busStop.id)
+        matchingArrivals.append(
+          contentsOf: arrivals.filter { busRouteIDs.contains($0.route.id) }
+        )
+      }
+
+      for busRoute in seoulBusRoutes {
+        let arrivals = try await seoulBusArrivalAPIClient.fetchArrivalsByRoute(busRoute.id)
+        matchingArrivals.append(contentsOf: arrivals.filter { $0.stationId == busStop.id })
+      }
+
       for arrival in matchingArrivals {
         upcomingBuses.append(
           contentsOf: arrival.upcomingBuses(boardingPoint: boardingPoint, busStop: busStop)

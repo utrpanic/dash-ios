@@ -2,9 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct DashFeatureView: View {
-  @Bindable private var store: StoreOf<DashFeatureReducer>
+  @Bindable private var store: StoreOf<DashFeature>
 
-  public init(store: StoreOf<DashFeatureReducer>) {
+  public init(store: StoreOf<DashFeature>) {
     self.store = store
   }
 
@@ -194,9 +194,9 @@ public struct DashFeatureView: View {
 }
 
 struct DashNavigationTitleView: View {
-  @Bindable private var store: StoreOf<DashFeatureReducer>
+  @Bindable private var store: StoreOf<DashFeature>
 
-  init(store: StoreOf<DashFeatureReducer>) {
+  init(store: StoreOf<DashFeature>) {
     self.store = store
   }
 
@@ -260,9 +260,9 @@ struct DashNavigationTitleView: View {
 }
 
 struct DashNavigationTrailingView: View {
-  @Bindable private var store: StoreOf<DashFeatureReducer>
+  @Bindable private var store: StoreOf<DashFeature>
 
-  init(store: StoreOf<DashFeatureReducer>) {
+  init(store: StoreOf<DashFeature>) {
     self.store = store
   }
   
@@ -293,7 +293,7 @@ struct DashNavigationTrailingView: View {
 #Preview("Light") {
   DashFeatureView(
     store: Store(initialState: .preview) {
-      DashFeatureReducer()
+      DashFeature()
     }
   )
   .preferredColorScheme(.light)
@@ -302,7 +302,7 @@ struct DashNavigationTrailingView: View {
 #Preview("Dark") {
   DashFeatureView(
     store: Store(initialState: .preview) {
-      DashFeatureReducer()
+      DashFeature()
     }
   )
   .preferredColorScheme(.dark)

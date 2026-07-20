@@ -78,7 +78,7 @@ public struct BusArrivalDTO: Decodable, Equatable, Sendable {
   func toDomain() -> BusArrival {
     BusArrival(
       stationId: stationId.value,
-      route: BusRoute(id: routeId.value, number: routeName.value),
+      route: BusRoute(id: routeId.value, number: routeName.value, region: .gyeonggi),
       stationOrder: staOrder.value,
       destinationName: routeDestName ?? "",
       operationState: flag ?? "",

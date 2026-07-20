@@ -51,11 +51,11 @@ import Testing
 @MainActor
 @Test func reducerStoresSearchedBusRoutes() async {
   let store = TestStore(initialState: DashFeatureState()) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.busRouteAPIClient.searchRoutes = { _ in
       [
-        BusRoute(id: 234000130, number: "1303")
+        BusRoute(id: 234000130, number: "1303", region: .gyeonggi)
       ]
     }
   }
@@ -66,10 +66,14 @@ import Testing
     $0.busRouteSearchErrorMessage = nil
   }
 
-  await store.receive(.busRouteSearchResponse(.success([BusRoute(id: 234000130, number: "1303")]))) {
+  await store.receive(
+    .busRouteSearchResponse(
+      .success([BusRoute(id: 234000130, number: "1303", region: .gyeonggi)])
+    )
+  ) {
     $0.isSearchingBusRoutes = false
     $0.busRouteSearchResults = [
-      BusRoute(id: 234000130, number: "1303")
+      BusRoute(id: 234000130, number: "1303", region: .gyeonggi)
     ]
     $0.busRouteSearchErrorMessage = nil
   }

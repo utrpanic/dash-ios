@@ -52,6 +52,10 @@ public extension BoardingPoint {
     routes: [
       .yeongdeungpoStation: [
         .gyeonggi_88,
+        .seoul_160,
+        .seoul_600,
+        .seoul_662,
+        .seoul_8671,
       ],
     ]
   )
@@ -61,6 +65,8 @@ public extension BoardingPoint {
     routes: [
       .theHyundaiSeoul: [
         .gyeonggi_88,
+        .seoul_662,
+        .seoul_6628,
       ],
     ]
   )

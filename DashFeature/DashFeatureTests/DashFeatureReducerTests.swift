@@ -14,7 +14,7 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
     timeIntervalUntilArrival: 3 * 60
   )
   let store = TestStore(initialState: DashFeatureState()) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { stationId in
@@ -61,11 +61,88 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 }
 
 @MainActor
+@Test func reducerLoadsUpcomingBusesFromSeoulArrivalAPI() async {
+  let expectedUpcomingBus = UpcomingBus(
+    boardingPoint: .theHyundaiSeoul,
+    busStop: .theHyundaiSeoul,
+    busRoute: .seoul_662,
+    timeIntervalUntilArrival: 4 * 60
+  )
+  let store = TestStore(initialState: DashFeatureState()) {
+    DashFeature()
+  } withDependencies: {
+    $0.date.now = testNow
+    $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
+    $0.seoulBusArrivalAPIClient.fetchArrivalsByRoute = { routeId in
+      guard routeId == BusRoute.seoul_662.id else {
+        return []
+      }
+
+      return [
+        BusArrival(
+          stationId: BusStop.theHyundaiSeoul.id,
+          route: .seoul_662,
+          stationOrder: 29,
+          destinationName: "",
+          operationState: "",
+          firstPrediction: BusArrivalPrediction(
+            minutes: 4,
+            seconds: nil,
+            locationNumber: nil,
+            plateNumber: "",
+            remainingSeatCount: nil,
+            stateCode: nil,
+            stationName: "",
+            vehicleId: nil
+          ),
+          secondPrediction: nil
+        )
+      ]
+    }
+  }
+
+  await store.send(.boardingPointSelected("the-hyundai-seoul")) {
+    $0.boardingPointSelection = .selected("the-hyundai-seoul")
+  }
+  await store.receive(.loadUpcomingBuses) {
+    $0.isLoadingUpcomingBuses = true
+    $0.upcomingBusesErrorMessage = nil
+  }
+  await store.receive(.loadUpcomingBusesResponse(.success([expectedUpcomingBus]))) {
+    $0.isLoadingUpcomingBuses = false
+    $0.upcomingBuses = [expectedUpcomingBus]
+    $0.upcomingBusesErrorMessage = nil
+    $0.lastUpdatedAt = testNow
+  }
+}
+
+@Test func boardingPointsIncludeRequestedSeoulBusRoutes() {
+  #expect(
+    BoardingPoint.yeongdeungpoStation.routes[.yeongdeungpoStation]?.isSuperset(
+      of: [
+        .seoul_160,
+        .seoul_600,
+        .seoul_662,
+        .seoul_8671,
+      ]
+    ) == true
+  )
+  #expect(
+    BoardingPoint.theHyundaiSeoul.routes[.theHyundaiSeoul]?.isSuperset(
+      of: [
+        .seoul_662,
+        .seoul_6628,
+      ]
+    ) == true
+  )
+}
+
+@MainActor
 @Test func reducerSelectsNextBoardingPoint() async {
   var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("suwon-station")
   let store = TestStore(initialState: initialState) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
@@ -138,7 +215,7 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
     longitude: BoardingPoint.homaesilSsangyongApartment.centerLongitude
   )
   let store = TestStore(initialState: DashFeatureState()) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.date.now = testNow
     $0.userLocationClient.requestLocation = { location }
@@ -182,7 +259,7 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
   var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("homaesil-ssangyong-apartment")
   let store = TestStore(initialState: initialState) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.date.now = testNow
     $0.busArrivalAPIClient.fetchArrivals = { _ in [] }
@@ -210,7 +287,7 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
   var initialState = DashFeatureState()
   initialState.boardingPointSelection = .selected("yeongdeungpo-station")
   let store = TestStore(initialState: initialState) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.date.now = testNow
     $0.userLocationClient.requestLocation = { location }
@@ -239,7 +316,7 @@ private let testNow = Date(timeIntervalSinceReferenceDate: 0)
 @MainActor
 @Test func reducerRepresentsDeniedLocationPermission() async {
   let store = TestStore(initialState: DashFeatureState()) {
-    DashFeatureReducer()
+    DashFeature()
   } withDependencies: {
     $0.userLocationClient.requestLocation = {
       throw UserLocationError.authorizationDenied

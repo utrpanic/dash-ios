@@ -9,7 +9,7 @@ struct SeoulBusRouteDTO: Equatable, Sendable {
   }
 
   func toDomain() -> BusRoute {
-    BusRoute(id: id, number: number)
+    BusRoute(id: id, number: number, region: .seoul)
   }
 }
 
@@ -33,7 +33,7 @@ struct SeoulBusRouteInfoDTO: Equatable, Sendable {
 
   func toDomain() -> BusRouteInfo {
     BusRouteInfo(
-      route: BusRoute(id: id, number: number),
+      route: BusRoute(id: id, number: number, region: .seoul),
       routeTypeName: routeType.map(Self.routeTypeName) ?? "",
       regionName: "서울",
       companyName: companyName,

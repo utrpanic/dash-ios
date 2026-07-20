@@ -36,7 +36,7 @@ public struct SeoulBusArrivalAPIClient: Sendable {
 }
 
 extension SeoulBusArrivalAPIClient: DependencyKey {
-  public static let liveValue = Self(
+  public static let liveValue = SeoulBusArrivalAPIClient(
     fetchArrival: { stationId, routeId, stationOrder in
       try await fetchArrival(
         path: "/api/rest/arrive/getArrInfoByRoute",
@@ -122,7 +122,7 @@ private extension SeoulBusArrivalAPIClient {
   static func emptyArrival(stationId: Int, routeId: Int, stationOrder: Int) -> BusArrival {
     BusArrival(
       stationId: stationId,
-      route: BusRoute(id: routeId, number: ""),
+      route: BusRoute(id: routeId, number: "", region: .seoul),
       stationOrder: stationOrder,
       destinationName: "",
       operationState: "",

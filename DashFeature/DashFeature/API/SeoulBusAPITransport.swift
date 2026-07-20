@@ -1,3 +1,4 @@
+import CoreFoundation
 import Foundation
 
 enum SeoulBusAPIError: Error, Equatable, Sendable {
@@ -24,7 +25,7 @@ enum SeoulBusAPITransport {
     components.scheme = "http"
     components.host = "ws.bus.go.kr"
     components.path = path
-    components.percentEncodedQuery = parameters
+    components.percentEncodedQuery = (parameters + [("resultType", "json")])
       .map { "\($0.name)=\(percentEncodedQueryValue($0.value))" }
       .joined(separator: "&")
 
@@ -43,7 +44,7 @@ enum SeoulBusAPITransport {
       throw SeoulBusAPIError.invalidStatusCode(httpResponse.statusCode)
     }
 
-    let apiResponse = try SeoulBusAPIXMLParser.parse(data)
+    let apiResponse = try SeoulBusAPIJSONParser.parse(data)
     let resultCode = apiResponse.header["headerCd"]
       ?? apiResponse.header["resultCode"]
       ?? apiResponse.header["returnReasonCode"]
@@ -111,65 +112,71 @@ struct SeoulBusAPIFields {
   }
 }
 
-private enum SeoulBusAPIXMLParser {
+enum SeoulBusAPIJSONParser {
   static func parse(_ data: Data) throws -> SeoulBusAPIResponse {
-    let delegate = Delegate()
-    let parser = XMLParser(data: data)
-    parser.delegate = delegate
-
-    guard parser.parse() else {
-      throw SeoulBusAPIError.malformedResponse(
-        parser.parserError?.localizedDescription ?? "Unable to parse XML response."
-      )
+    let json: Any
+    do {
+      json = try JSONSerialization.jsonObject(with: data)
+    } catch {
+      throw SeoulBusAPIError.malformedResponse("Unable to parse JSON response.")
     }
 
-    return SeoulBusAPIResponse(header: delegate.header, items: delegate.items)
+    guard let root = json as? [String: Any] else {
+      throw SeoulBusAPIError.malformedResponse("Invalid JSON response root.")
+    }
+
+    var header = try strings(in: root["msgHeader"], fieldName: "msgHeader")
+    let commonHeader = try strings(in: root["comMsgHeader"], fieldName: "comMsgHeader")
+    header.merge(commonHeader) { current, _ in current }
+
+    guard let body = root["msgBody"] as? [String: Any] else {
+      return SeoulBusAPIResponse(header: header, items: [])
+    }
+
+    let items: [[String: String]]
+    switch body["itemList"] {
+    case let itemList as [[String: Any]]:
+      items = try itemList.map { try strings(in: $0, fieldName: "itemList") }
+    case let item as [String: Any]:
+      items = [try strings(in: item, fieldName: "itemList")]
+    case nil, is NSNull:
+      items = []
+    default:
+      throw SeoulBusAPIError.malformedResponse("Invalid itemList field.")
+    }
+
+    return SeoulBusAPIResponse(header: header, items: items)
   }
 
-  private final class Delegate: NSObject, XMLParserDelegate {
-    var header: [String: String] = [:]
-    var items: [[String: String]] = []
+  private static func strings(in value: Any?, fieldName: String) throws -> [String: String] {
+    guard let value, !(value is NSNull) else {
+      return [:]
+    }
+    guard let object = value as? [String: Any] else {
+      throw SeoulBusAPIError.malformedResponse("Invalid \(fieldName) field.")
+    }
 
-    private var currentItem: [String: String]?
-    private var currentText = ""
-
-    func parser(
-      _ parser: XMLParser,
-      didStartElement elementName: String,
-      namespaceURI: String?,
-      qualifiedName qName: String?,
-      attributes attributeDict: [String: String] = [:]
-    ) {
-      currentText = ""
-      if elementName == "itemList" {
-        currentItem = [:]
+    return try object.reduce(into: [:]) { result, field in
+      guard !(field.value is NSNull) else {
+        return
       }
-    }
-
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-      currentText += string
-    }
-
-    func parser(
-      _ parser: XMLParser,
-      didEndElement elementName: String,
-      namespaceURI: String?,
-      qualifiedName qName: String?
-    ) {
-      let value = currentText.trimmingCharacters(in: .whitespacesAndNewlines)
-
-      if elementName == "itemList" {
-        if let currentItem, !currentItem.isEmpty {
-          items.append(currentItem)
-        }
-        currentItem = nil
-      } else if currentItem != nil {
-        currentItem?[elementName] = value
-      } else if !value.isEmpty {
-        header[elementName] = value
+      guard let string = string(from: field.value) else {
+        throw SeoulBusAPIError.malformedResponse("Invalid \(fieldName).\(field.key) field.")
       }
-
-      currentText = ""
+      result[field.key] = string
     }
+  }
+
+  private static func string(from value: Any) -> String? {
+    if let value = value as? String {
+      return value
+    }
+    guard let value = value as? NSNumber else {
+      return nil
+    }
+    if CFGetTypeID(value) == CFBooleanGetTypeID() {
+      return value.boolValue ? "true" : "false"
+    }
+    return value.stringValue
   }
 }

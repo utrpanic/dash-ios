@@ -17,9 +17,22 @@
 		8C8BC8992FF9D4400091ADE5 /* DashPlatform */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DashPlatform; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8C4AA8F9300E61A80021812F /* Exceptions for "Dash" folder in "Dash" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8C81D8D32FF94B8500F06FED /* Dash */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8C81D8D62FF94B8500F06FED /* Dash */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8C4AA8F9300E61A80021812F /* Exceptions for "Dash" folder in "Dash" target */,
+			);
 			path = Dash;
 			sourceTree = "<group>";
 		};
@@ -276,6 +289,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Dash/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치에서 가장 가까운 목적지를 자동으로 선택합니다.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -320,6 +334,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Dash/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치에서 가장 가까운 목적지를 자동으로 선택합니다.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
