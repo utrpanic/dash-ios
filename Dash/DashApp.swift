@@ -1,4 +1,3 @@
-import ComposableArchitecture
 import DashFeature
 import SwiftUI
 
@@ -6,11 +5,7 @@ import SwiftUI
 struct DashApp: App {
   var body: some Scene {
     WindowGroup {
-      DashFeatureView(
-        store: Store(initialState: DashFeatureState()) {
-          DashFeature()
-        }
-      )
+      DashFeatureView()
     }
   }
 }

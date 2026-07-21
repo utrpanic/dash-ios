@@ -1,35 +1,33 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct DashFeatureView: View {
-  @Bindable private var store: StoreOf<DashFeature>
+struct CurrentBoardingPointView: View {
+  @Bindable private var store: StoreOf<CurrentBoardingPointFeature>
 
-  public init(store: StoreOf<DashFeature>) {
+  init(store: StoreOf<CurrentBoardingPointFeature>) {
     self.store = store
   }
 
-  public var body: some View {
-    NavigationStack {
-      content
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItem(placement: .topBarLeading) {
-            DashNavigationTitleView(store: store)
-              .fixedSize(horizontal: true, vertical: false)
-              .transaction {
-                $0.animation = nil
-                $0.disablesAnimations = true
-              }
-          }
-          .sharedBackgroundVisibility(.hidden)
-          ToolbarItem(placement: .topBarTrailing) {
-            DashNavigationTrailingView(store: store)
-          }
-          .sharedBackgroundVisibility(.hidden)
+  var body: some View {
+    content
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          CurrentBoardingPointNavigationTitleView(store: store)
+            .fixedSize(horizontal: true, vertical: false)
+            .transaction {
+              $0.animation = nil
+              $0.disablesAnimations = true
+            }
         }
-        .toolbarBackground(r.color.background, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-    }
+        .sharedBackgroundVisibility(.hidden)
+        ToolbarItem(placement: .topBarTrailing) {
+          CurrentBoardingPointNavigationTrailingView(store: store)
+        }
+        .sharedBackgroundVisibility(.hidden)
+      }
+      .toolbarBackground(r.color.background, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
   }
 
   private var content: some View {
@@ -193,35 +191,23 @@ public struct DashFeatureView: View {
   }
 }
 
-struct DashNavigationTitleView: View {
-  @Bindable private var store: StoreOf<DashFeature>
-
-  init(store: StoreOf<DashFeature>) {
-    self.store = store
-  }
+private struct CurrentBoardingPointNavigationTitleView: View {
+  @Bindable var store: StoreOf<CurrentBoardingPointFeature>
 
   var body: some View {
-    boardingPointButton
-  }
-
-  private var boardingPointButton: some View {
     Button {
       store.send(.nextBoardingPointButtonTapped)
     } label: {
       HStack(spacing: 8) {
-        boardingPointTitleIcon
+        Image(systemName: "location.circle.fill")
+          .symbolRenderingMode(.palette)
+          .font(.system(size: 24, weight: .semibold))
+          .foregroundStyle(.white, r.color.brandMint)
         boardingPointTitleLabel
       }
     }
     .buttonStyle(.plain)
     .disabled(store.boardingPointSelection == .locating || store.boardingPoints.isEmpty)
-  }
-
-  private var boardingPointTitleIcon: some View {
-    Image(systemName: "location.circle.fill")
-      .symbolRenderingMode(.palette)
-      .font(.system(size: 24, weight: .semibold))
-      .foregroundStyle(.white, r.color.brandMint)
   }
 
   private var boardingPointTitleLabel: some View {
@@ -259,13 +245,9 @@ struct DashNavigationTitleView: View {
   }
 }
 
-struct DashNavigationTrailingView: View {
-  @Bindable private var store: StoreOf<DashFeature>
+private struct CurrentBoardingPointNavigationTrailingView: View {
+  let store: StoreOf<CurrentBoardingPointFeature>
 
-  init(store: StoreOf<DashFeature>) {
-    self.store = store
-  }
-  
   var body: some View {
     HStack(spacing: 0) {
       Button {
@@ -278,7 +260,7 @@ struct DashNavigationTrailingView: View {
       .disabled(store.boardingPointIsNotAvailable)
       .accessibilityLabel("편집")
       Button {
-        
+        store.send(.listButtonTapped)
       } label: {
         Image(systemName: "list.bullet")
           .offset(x: 0, y: 2)
@@ -291,24 +273,24 @@ struct DashNavigationTrailingView: View {
 }
 
 #Preview("Light") {
-  DashFeatureView(
+  CurrentBoardingPointView(
     store: Store(initialState: .preview) {
-      DashFeature()
+      CurrentBoardingPointFeature()
     }
   )
   .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-  DashFeatureView(
+  CurrentBoardingPointView(
     store: Store(initialState: .preview) {
-      DashFeature()
+      CurrentBoardingPointFeature()
     }
   )
   .preferredColorScheme(.dark)
 }
 
-private extension DashFeatureState {
+private extension CurrentBoardingPointFeature.State {
   static var preview: Self {
     var state = Self()
     state.boardingPointSelection = .selected(BoardingPoint.suwonStation.id)
