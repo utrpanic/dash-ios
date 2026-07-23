@@ -20,7 +20,6 @@ struct CurrentBoardingPointView: View {
               $0.disablesAnimations = true
             }
         }
-        .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .topBarTrailing) {
           CurrentBoardingPointNavigationTrailingView(store: store)
         }
@@ -60,9 +59,10 @@ struct CurrentBoardingPointView: View {
         } else {
           ScrollView {
             BoardingPointView(upcomingBuses: Array(store.upcomingBuses.sortedByArrival.prefix(5)))
-              .padding(.top, 16)
-              .padding(.bottom, 84)
+              .padding(.top, 10)
+              .padding(.bottom, 128)
           }
+          .scrollIndicators(.hidden)
         }
       }
       .padding(.horizontal, 16)
@@ -221,17 +221,22 @@ private struct CurrentBoardingPointNavigationTitleView: View {
     case let .selected(boardingPointID):
       (store.boardingPoints.first { $0.id == boardingPointID }?.name ?? "", true)
     }
-    return HStack(spacing: 8) {
+    return HStack(spacing: 0) {
       Text(title)
         .font(.system(size: 24, weight: .regular))
         .foregroundStyle(boardingPointTitleColor)
         .lineLimit(1)
         .frame(maxWidth: 160, alignment: .leading)
       if showTrailingIcon {
+        Spacer()
+          .frame(width: 4)
         Image(systemName: "chevron.right")
           .font(.system(size: 16, weight: .medium))
           .foregroundStyle(r.color.textSecondary)
+        
       }
+      Spacer()
+        .frame(width: 8)
     }
   }
 
@@ -273,20 +278,24 @@ private struct CurrentBoardingPointNavigationTrailingView: View {
 }
 
 #Preview("Light") {
-  CurrentBoardingPointView(
-    store: Store(initialState: .preview) {
-      CurrentBoardingPointFeature()
-    }
-  )
+  NavigationStack {
+    CurrentBoardingPointView(
+      store: Store(initialState: .preview) {
+        CurrentBoardingPointFeature()
+      }
+    )
+  }
   .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-  CurrentBoardingPointView(
-    store: Store(initialState: .preview) {
-      CurrentBoardingPointFeature()
-    }
-  )
+  NavigationStack {
+    CurrentBoardingPointView(
+      store: Store(initialState: .preview) {
+        CurrentBoardingPointFeature()
+      }
+    )
+  }
   .preferredColorScheme(.dark)
 }
 

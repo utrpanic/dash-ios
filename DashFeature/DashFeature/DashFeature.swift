@@ -40,7 +40,10 @@ struct DashFeature {
         case .boardingPointsRequested:
           state.path.append(
             .boardingPoints(
-              BoardingPointsFeature.State()
+              BoardingPointsFeature.State(
+                boardingPoints: state.currentBoardingPoint.boardingPoints,
+                selectedBoardingPointID: state.currentBoardingPoint.selectedBoardingPointID
+              )
             )
           )
           return .none
